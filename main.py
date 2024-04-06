@@ -11,7 +11,12 @@ import datetime
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-
+# TODO list
+#  mazat virtualky      - DONE
+#  start                - DONE
+#  stop                 - DONE?
+#  pause
+#  pristup ke konzoli
 class Connection:
     session = ""
     nodes_response = ""
@@ -87,7 +92,33 @@ class Connection:
     #function which create new virtual machine
     # arguments: vm_name, max memory, cpus
 
-    def create_vm(self, name, cores, memory, vmid):
+    def get_virt_storage(self):
+        for node_name in self.get_nodes():
+            url = f'{self.PROXMOX_HOST}/nodes/{node_name}/storage'
+            response = self.session.get(url, verify=False)
+            storages = response.json()
+            for storage in storages['data']:
+                print(f'Storage: {storage["storage"]}\n\t'
+                      f'Used fraction: {"{:.2f}".format(storage["used_fraction"]*100)}%\n\t'
+                      f'Shared: {str(storage["shared"])} \n\t'
+                      f'Active: {storage["active"]}\n\t'
+                      f'Type: {storage["type"]} \n\t'
+                      f'Content: {storage["content"]}\n\t'
+                      f'Total: {"{:.2f}".format(storage["total"]/1024/1024/1024)}GiB\n\t'
+                      f'Used: {"{:.2f}".format(storage["used"]/1024/1024/1024)}GiB\n\t'
+                      f'Available: {"{:.2f}".format(storage["avail"]/1024/1024/1024)}GiB\n\t'
+                      f'Enabled: {storage["enabled"]}\n\t'
+                      )
+
+    def create_virt_storage(self, vmid):
+        url = f'{self.PROXMOX_HOST}/nodes/{self.nodes}/storage'
+        data= {'storage': storage_id,
+        'type': 'lvm',
+        'content': 'images,rootdir',
+        'volume_group': volume_group,
+    }
+
+    def create_vm(self, name, cores, memory, vmid, disk_size):
         # vms_url = f'{self.PROXMOX_HOST}/'
         # self.vms_response = self.session.get(vms_url, verify=False)
         if not self.nodes:
@@ -100,12 +131,17 @@ class Connection:
         #     'CSRFPreventionToken': self.csrf_token,
         #     'Cookie': f'PVEAuthCookie={self.ticket}'
         # }
+        virtio = f'local-lvm:vm-{vmid}-disk-0,size={disk_size}G'
         data = {
             'vmid': vmid,
             'name': name,
             'memory': memory,
-            'cores': cores
-
+            'cores': cores,
+            'net0': 'virtio,bridge=vmbr0',
+            'ostype': 'l26',  # Linux 2.6/3.X/4.X
+            'ide2': 'none,media=cdrom',
+            'bootdisk': 'virtio0',
+            'virtio0': virtio
         }
 
         response = self.session.post(create_url,
@@ -114,23 +150,55 @@ class Connection:
         if response.status_code == 200:
             print("hurray")
         else:
-            print("oh no " + response.text)
+            print(f'oh no {response.text} reason: {response.reason}')
+
+    def delete_vm(self, vmid):
+        if not self.nodes:
+            url = f'{self.PROXMOX_HOST}/nodes/{self.get_nodes()[0]}/qemu/{vmid}'
+        else:
+            url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu/{vmid}'
+        response = requests.delete(url, verify=False, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket})
+        if response.status_code in [200, 202]:
+            print(f'VM {vmid}.RIP.')
+        else:
+            print(f'VM {vmid} is still alive . Error: {response.text} status code:{response.status_code} {response.reason}')
 
     def get_max_vmid(self):
         if not self.vms:
             self.list_vms(False)
-        vmids=[]
+        vmids = []
         for vm in self.vms['data']:
             vmids.append(vm['vmid'])
         # print(vmids)
         return max(vmids)
-# Press the green button in the gutter to run the script.
+
+    def start_vm(self, vmid):
+        url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu/{vmid}/status/start'
+        response = requests.post(url, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket}, verify=False)
+        if response.status_code == 200:
+            print(f'Run Forest VM {vmid}.')
+        else:
+            print(f'VM {vmid} is still sleeping :-( {response.reason}')
+
+    def stop_vm(self, vmid):
+        url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu/{vmid}/status/stop'
+        response = requests.post(url, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket}, verify=False)
+        if response.status_code == 200:
+            print(f'VM stopped {vmid}.')
+        else:
+            print(f'Could not stop VM {vmid} :-( {response.reason}')
+
+
 if __name__ == '__main__':
 
     connection = Connection()
     # connection.get_nodes()
     # vms = connection.list_vms(False)
     # print(vms['data'])
-    connection.create_vm(name="pokus", cores=1, memory=512, vmid=connection.get_max_vmid()+1, )
+    # connection.create_vm(name="pokus", cores=1, memory=512, vmid=connection.get_max_vmid()+1, disk_size=32)
+    # connection.create_vm(name="pokus", cores=1, memory=512, vmid=112, disk_size=32)
+    # connection.delete_vm(vmid=112)
     # print(connection.get_max_vmid())
-
+    # connection.start_vm(112)
+    # connection.stop_vm(112)
+    connection.get_virt_storage()
