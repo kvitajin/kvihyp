@@ -1,11 +1,5 @@
-import certifi
 import requests
-from requests.auth import HTTPBasicAuth
-import ssl
-import urllib.request
-import urlopen
 import secrets
-import json
 import datetime
 
 import urllib3
@@ -61,11 +55,11 @@ class Connection:
         data = self.nodes_response.json()
         self.nodes.clear()
         i = 0
-        # print(data['data'])
+        print(f'im here> \t{data}')
         for row in data['data']:
-            # print(row['node'])
+            print(row)
             self.nodes.append(row['node'])
-            i = i+1
+            # i = i+1
         if not self.nodes:
             raise Exception('No nodes found')
         return self.nodes
@@ -82,43 +76,60 @@ class Connection:
             self.vms = self.nodes_response.json()
             if print_vms:
                 for vm in self.vms['data']:
-                    print("Name: " + vm['name'] + "\n" + "\t cpus: " + str(vm['cpus']) + "\n" +
-                          "\t Cpu usage: " + str("{:.2f}".format(vm['cpu'] * 100)) + "%\n" +
-                          "\t Max memory usage: " + str(vm['maxmem'] / 1024 / 1024 / 1024) +
-                          "GiB\n\t Mem usage:" + str("{:.3f}".format(vm['mem'] / 1024 / 1024 / 1024)) +
-                          "GiB\n\t Uptime: " + str(datetime.timedelta(seconds=vm['uptime'])))
+                    print(f'Name: {vm["name"]}\n\tcpus: {str(vm["cpus"])} \n\t'
+                          f'Cpu usage: {str("{:.2f}".format(vm["cpu"] * 100))}%\n\t'
+                          f'Max memory usage: {str(vm["maxmem"] / 1024 / 1024 / 1024)} GiB\n\t'
+                          f'Mem usage: {str("{:.3f}".format(vm["mem"] / 1024 / 1024 / 1024))} GiB\n\t'
+                          f'Uptime: {str(datetime.timedelta(seconds=vm["uptime"]))}')
                 return
         return self.vms
     #function which create new virtual machine
     # arguments: vm_name, max memory, cpus
 
-    def get_virt_storage(self):
+    def get_virt_storage(self, print_storage=False):
         for node_name in self.get_nodes():
             url = f'{self.PROXMOX_HOST}/nodes/{node_name}/storage'
             response = self.session.get(url, verify=False)
             storages = response.json()
             for storage in storages['data']:
-                print(f'Storage: {storage["storage"]}\n\t'
-                      f'Used fraction: {"{:.2f}".format(storage["used_fraction"]*100)}%\n\t'
-                      f'Shared: {str(storage["shared"])} \n\t'
-                      f'Active: {storage["active"]}\n\t'
-                      f'Type: {storage["type"]} \n\t'
-                      f'Content: {storage["content"]}\n\t'
-                      f'Total: {"{:.2f}".format(storage["total"]/1024/1024/1024)}GiB\n\t'
-                      f'Used: {"{:.2f}".format(storage["used"]/1024/1024/1024)}GiB\n\t'
-                      f'Available: {"{:.2f}".format(storage["avail"]/1024/1024/1024)}GiB\n\t'
-                      f'Enabled: {storage["enabled"]}\n\t'
-                      )
+                if print_storage:
+                    print(f'Storage: {storage["storage"]}\n\t'
+                          f'Used fraction: {"{:.2f}".format(storage["used_fraction"]*100)}%\n\t'
+                          f'Shared: {str(storage["shared"])} \n\t'
+                          f'Active: {storage["active"]}\n\t'
+                          f'Type: {storage["type"]} \n\t'
+                          f'Content: {storage["content"]}\n\t'
+                          f'Total: {"{:.2f}".format(storage["total"]/1024/1024/1024)}GiB\n\t'
+                          f'Used: {"{:.2f}".format(storage["used"]/1024/1024/1024)}GiB\n\t'
+                          f'Available: {"{:.2f}".format(storage["avail"]/1024/1024/1024)}GiB\n\t'
+                          f'Enabled: {storage["enabled"]}\n\t'
+                          )
+                return storages
 
-    def create_virt_storage(self, vmid):
-        url = f'{self.PROXMOX_HOST}/nodes/{self.nodes}/storage'
-        data= {'storage': storage_id,
-        'type': 'lvm',
-        'content': 'images,rootdir',
-        'volume_group': volume_group,
-    }
+    def get_virt_pokus(self):
+        storages = self.get_virt_storage()
+        # print(storages)
+        for storage in storages['data']:
+            urlinside = f'{self.PROXMOX_HOST}/nodes/{self.get_nodes()[0]}/storage/{storage["storage"]}/content'
+            response_inside = self.session.get(urlinside, verify=False)
+            print(storage)
+            print(f'\t{vars(response_inside)}')
 
-    def create_vm(self, name, cores, memory, vmid, disk_size):
+    def create_virt_storage(self, storage, vmid, size):
+        url = f'{self.PROXMOX_HOST}/nodes/{self.get_nodes()[0]}/storage/{storage}/content'
+        print(url)
+        data = {'vmid': vmid,
+                'filename': f"vm-{vmid}-disk-1",
+                'size': size,
+                'format': 'raw'
+                }
+        response = self.session.post(url, data=data, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket})
+        if response.status_code == 200:
+            print(f'uspesne vytvoreno na {storage}')
+        else:
+            print(f'neco se nepovedlo duvod: {response.reason}')
+
+    def create_vm(self, name, cores, memory, vmid, disk_size, storage="local-lvm"):
         # vms_url = f'{self.PROXMOX_HOST}/'
         # self.vms_response = self.session.get(vms_url, verify=False)
         if not self.nodes:
@@ -131,7 +142,7 @@ class Connection:
         #     'CSRFPreventionToken': self.csrf_token,
         #     'Cookie': f'PVEAuthCookie={self.ticket}'
         # }
-        virtio = f'local-lvm:vm-{vmid}-disk-0,size={disk_size}G'
+        virtio = f'{storage}:vm-{vmid}-disk-1'
         data = {
             'vmid': vmid,
             'name': name,
@@ -143,7 +154,7 @@ class Connection:
             'bootdisk': 'virtio0',
             'virtio0': virtio
         }
-
+        self.create_virt_storage(storage=storage, size=disk_size, vmid=vmid)
         response = self.session.post(create_url,
                                      data=data,
                                      verify=False, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket})
@@ -201,4 +212,12 @@ if __name__ == '__main__':
     # print(connection.get_max_vmid())
     # connection.start_vm(112)
     # connection.stop_vm(112)
-    connection.get_virt_storage()
+    # connection.get_virt_storage()
+    # connection.get_virt_pokus()
+    # connection.create_virt_storage(storage="local-lvm", size=1024, vmid=112)
+    connection.create_vm(name="vyser-si-oko",
+                         cores=2,
+                         memory=1024,
+                         vmid=connection.get_max_vmid()+1,
+                         disk_size=1024,
+                         storage="local-lvm")
