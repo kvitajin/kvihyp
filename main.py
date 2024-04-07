@@ -8,8 +8,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # TODO list
 #  mazat virtualky      - DONE
 #  start                - DONE
-#  stop                 - DONE?
-#  pause
+#  stop                 - DONE
+#  pause                - DONE
 #  pristup ke konzoli
 class Connection:
     session = ""
@@ -32,16 +32,17 @@ class Connection:
         self.ticket = auth_response['data']['ticket']
         CSRFPreventionToken = auth_response['data']['CSRFPreventionToken']
 
-        # Create a session for subsequent requests
         self.session = requests.Session()
         self.csrf_token = {'CSRFPreventionToken': CSRFPreventionToken}
         self.session.headers.update(self.csrf_token)
         self.session.cookies['PVEAuthCookie'] = self.ticket
+        self.ticket = {'PVEAuthCookie': self.ticket}
+
         # session.debug = session.post(auth_url,data={"username": "{}".format(USERNAME),  "password": "{}".format(PASSWORD)},verify=False)
         # print( vars(session.debug))
-        # Step 2: Use the token to perform requests
         nodes_url = f'{self.PROXMOX_HOST}/nodes'
         self.nodes_response = self.session.get(nodes_url, verify=False)
+        self.nodes = self.get_nodes()
         # nodes_response = session.get(nodes_url)
         # i = 0
         # for node in nodes_response:
@@ -52,12 +53,14 @@ class Connection:
 
 # Returns list of nodes , for me pve-precision
     def get_nodes(self):
+        nodes_url = f'{self.PROXMOX_HOST}/nodes'
+        self.nodes_response = self.session.get(nodes_url, verify=False)
         data = self.nodes_response.json()
         self.nodes.clear()
         i = 0
-        print(f'im here> \t{data}')
+        print(f'im here> \t{data["data"]}')
         for row in data['data']:
-            print(row)
+            # print(row)
             self.nodes.append(row['node'])
             # i = i+1
         if not self.nodes:
@@ -72,8 +75,8 @@ class Connection:
         # print(self.nodes)
         for node_name in self.get_nodes():
             vms_url = f'{self.PROXMOX_HOST}/nodes/{node_name}/qemu/'
-            self.nodes_response = self.session.get(vms_url, verify=False)
-            self.vms = self.nodes_response.json()
+            vm_response = self.session.get(vms_url, verify=False)
+            self.vms = vm_response.json()
             if print_vms:
                 for vm in self.vms['data']:
                     print(f'Name: {vm["name"]}\n\tcpus: {str(vm["cpus"])} \n\t'
@@ -83,9 +86,9 @@ class Connection:
                           f'Uptime: {str(datetime.timedelta(seconds=vm["uptime"]))}')
                 return
         return self.vms
-    #function which create new virtual machine
-    # arguments: vm_name, max memory, cpus
 
+    # function which create new virtual machine
+    # arguments: vm_name, max memory, cpus
     def get_virt_storage(self, print_storage=False):
         for node_name in self.get_nodes():
             url = f'{self.PROXMOX_HOST}/nodes/{node_name}/storage'
@@ -123,7 +126,7 @@ class Connection:
                 'size': size,
                 'format': 'raw'
                 }
-        response = self.session.post(url, data=data, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket})
+        response = self.session.post(url, data=data, headers=self.csrf_token, cookies=self.ticket)
         if response.status_code == 200:
             print(f'uspesne vytvoreno na {storage}')
         else:
@@ -157,7 +160,7 @@ class Connection:
         self.create_virt_storage(storage=storage, size=disk_size, vmid=vmid)
         response = self.session.post(create_url,
                                      data=data,
-                                     verify=False, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket})
+                                     verify=False, headers=self.csrf_token, cookies=self.ticket)
         if response.status_code == 200:
             print("hurray")
         else:
@@ -168,7 +171,7 @@ class Connection:
             url = f'{self.PROXMOX_HOST}/nodes/{self.get_nodes()[0]}/qemu/{vmid}'
         else:
             url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu/{vmid}'
-        response = requests.delete(url, verify=False, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket})
+        response = requests.delete(url, verify=False, headers=self.csrf_token, cookies=self.ticket)
         if response.status_code in [200, 202]:
             print(f'VM {vmid}.RIP.')
         else:
@@ -185,7 +188,7 @@ class Connection:
 
     def start_vm(self, vmid):
         url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu/{vmid}/status/start'
-        response = requests.post(url, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket}, verify=False)
+        response = requests.post(url, headers=self.csrf_token, cookies=self.ticket, verify=False)
         if response.status_code == 200:
             print(f'Run Forest VM {vmid}.')
         else:
@@ -193,11 +196,19 @@ class Connection:
 
     def stop_vm(self, vmid):
         url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu/{vmid}/status/stop'
-        response = requests.post(url, headers=self.csrf_token, cookies={'PVEAuthCookie': self.ticket}, verify=False)
+        response = requests.post(url, headers=self.csrf_token, cookies=self.ticket, verify=False)
         if response.status_code == 200:
             print(f'VM stopped {vmid}.')
         else:
             print(f'Could not stop VM {vmid} :-( {response.reason}')
+
+    def suspend_vm(self, vmid):
+        url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu/{vmid}/status/suspend'
+        response = requests.post(url, headers=self.csrf_token, cookies=self.ticket, verify=False)
+        if response.status_code == 200:
+            print(f'VM was suspended {vmid}.')
+        else:
+            print(f'Could not suspend VM {vmid} :-( {response.reason}')
 
 
 if __name__ == '__main__':
@@ -215,9 +226,13 @@ if __name__ == '__main__':
     # connection.get_virt_storage()
     # connection.get_virt_pokus()
     # connection.create_virt_storage(storage="local-lvm", size=1024, vmid=112)
-    connection.create_vm(name="vyser-si-oko",
-                         cores=2,
-                         memory=1024,
-                         vmid=connection.get_max_vmid()+1,
-                         disk_size=1024,
-                         storage="local-lvm")
+    # connection.create_vm(name="vyser-si-oko",
+    #                      cores=2,
+    #                      memory=1024,
+    #                      vmid=connection.get_max_vmid()+1,
+    #                      disk_size=1024,
+    #                      storage="local-lvm")
+    # connection.list_vms(True)
+    connection.start_vm(114)
+    # connection.stop_vm(114)
+    connection.suspend_vm(114)
