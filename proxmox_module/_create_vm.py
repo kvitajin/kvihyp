@@ -1,8 +1,8 @@
 def create_vm(self, name, cores, memory, vmid, disk_size, storage="local-lvm"):
     if not self.nodes:
-        create_url = f'{self.PROXMOX_HOST}/nodes/{self.get_nodes()[0]}/qemu'
+        create_url = f'{self.PROXMOX_HTTP_HOST}/nodes/{self.get_nodes()[0]}/qemu'
     else:
-        create_url = f'{self.PROXMOX_HOST}/nodes/{self.nodes[0]}/qemu'
+        create_url = f'{self.PROXMOX_HTTP_HOST}/nodes/{self.nodes[0]}/qemu'
 
     virtio = f'{storage}:vm-{vmid}-disk-1'
     data = {

@@ -1,5 +1,5 @@
 def get_nodes(self):
-    nodes_url = f'{self.PROXMOX_HOST}/nodes'
+    nodes_url = f'{self.PROXMOX_HTTP_HOST}/nodes'
     self.nodes_response = self.session.get(nodes_url, verify=False)
     data = self.nodes_response.json()
     self.nodes.clear()
