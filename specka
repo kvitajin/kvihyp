@@ -1,0 +1,11 @@
+list_vms
+    name
+    cpus
+    cpu usage
+    status
+    vmid
+    max memory
+    mem usage
+    uptime
+
+

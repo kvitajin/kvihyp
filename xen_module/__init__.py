@@ -4,8 +4,9 @@ import ssl
 from ._delete_vm import delete_vm
 from ._get_template import get_templates
 from ._get_nodes import get_nodes
-from ._smazat import fuckit, get_vm_ref, get_vm_info
-
+# from ._smazat import get_vm_ref, get_vms
+from ._get_vms import get_vms
+from ._create_vm import create_vm
 
 class Xen(object):
     def __init__(self):
@@ -26,10 +27,11 @@ class Xen(object):
 
         Xen.delete_vm = delete_vm
         Xen.get_templates = get_templates
-        Xen.get_nodes = get_nodes
-        Xen.fuckit = fuckit
-        Xen.get_vm_info = get_vm_info
-        Xen.get_vm_ref = get_vm_ref
+        Xen.get_nodes = get_nodes               #DONE
+        # Xen.get_vm_info = get_vm_info
+        # Xen.get_vm_ref = get_vm_ref
+        Xen.get_vms = get_vms
+        Xen.create_vm = create_vm
 
         # Proxmox.list_vms = list_vms
         # Proxmox.get_virt_storage = get_virt_storage
