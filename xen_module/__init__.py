@@ -7,6 +7,10 @@ from ._get_nodes import get_nodes
 # from ._smazat import get_vm_ref, get_vms
 from ._get_vms import get_vms
 from ._create_vm import create_vm
+from ._start_vm import start_vm
+from ._stop_vm import stop_vm
+from ._suspend_vm import suspend_vm
+from ._open_console import open_console
 
 class Xen(object):
     def __init__(self):
@@ -32,15 +36,14 @@ class Xen(object):
         # Xen.get_vm_ref = get_vm_ref
         Xen.get_vms = get_vms
         Xen.create_vm = create_vm
-
+        Xen.start_vm = start_vm
+        Xen.stop_vm = stop_vm
+        Xen.suspend_vm = suspend_vm
+        Xen.open_console = open_console
         # Proxmox.list_vms = list_vms
         # Proxmox.get_virt_storage = get_virt_storage
         # Proxmox.create_virt_storage = create_virt_storage
-        # Proxmox.delete_vm = delete_vm
-        # Proxmox.start_vm = start_vm
-        # Proxmox.stop_vm = stop_vm
-        # Proxmox.suspend_vm = suspend_vm
-        # Proxmox.create_vm = create_vm
+
         # Proxmox.get_max_vmid = get_max_vmid
         # Proxmox.open_console = open_console
         # Proxmox.get_virt_detail = get_virt_detail
