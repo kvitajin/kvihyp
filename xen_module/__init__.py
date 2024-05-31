@@ -11,6 +11,8 @@ from ._start_vm import start_vm
 from ._stop_vm import stop_vm
 from ._suspend_vm import suspend_vm
 from ._open_console import open_console
+from ._get_virt_storage import get_virt_storage
+from ._create_virt_storage import create_virt_storage
 
 class Xen(object):
     def __init__(self):
@@ -40,12 +42,12 @@ class Xen(object):
         Xen.stop_vm = stop_vm
         Xen.suspend_vm = suspend_vm
         Xen.open_console = open_console
+        Xen.get_virt_storage = get_virt_storage
+        Xen.create_virt_storage = create_virt_storage
         # Proxmox.list_vms = list_vms
         # Proxmox.get_virt_storage = get_virt_storage
         # Proxmox.create_virt_storage = create_virt_storage
 
-        # Proxmox.get_max_vmid = get_max_vmid
-        # Proxmox.open_console = open_console
         # Proxmox.get_virt_detail = get_virt_detail
         # Proxmox.get_spice_config = get_spice_config
         # Proxmox.launch_spice_viewer = launch_spice_viewer
