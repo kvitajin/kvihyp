@@ -51,6 +51,7 @@ if __name__ == '__main__':
     # conn.start_vm(11)
     # conn.get_spice_config(113)
     # conn.launch_spice_viewer(113)
+    conn.get_virt_storage(True)
     xen = Xen()
     # xen_module.list_templates()
     # xen.create_vm_whithout_template(name_label="pokus weeee", name_description="tak hodne stesti")
@@ -59,18 +60,23 @@ if __name__ == '__main__':
     # xen_module.get_all_vm_info()
     # print(xen_module.get_VMs())
     print("Xen")
-    xen.get_vms(True)
+    # xen.get_vms(True)
     # xen.list_vms(True)
     # print(xen.get_templates())
     # xen.create_vm(name="pokus", cores=1, memory=512, vmid=112, disk_size=32)
         # print(i['Value'])
     # for i in fuckit:
     #     data.append(xen.get_vm_info(i))
-    xen.delete_vm('a1416650-8f30-60e6-9bd7-0c8ef7f39651')
-
+    # xen.start_vm('3e83e4a3-767b-f74c-49d6-84a6ca37b045')
+    # xen.suspend_vm('3e83e4a3-767b-f74c-49d6-84a6ca37b045')
+    # xen.stop_vm('3e83e4a3-767b-f74c-49d6-84a6ca37b045')
+    # xen.delete_vm('3e83e4a3-767b-f74c-49d6-84a6ca37b045')
+    # print(xen.open_console('ac3f83c4-39bc-05ba-d56f-3c3847175f90'))
     # for key, value in data:
     #     print(f'{key}={value}\n')
     # print(data[0])
+    xen.get_virt_storage(True)
+    xen.create_virt_storage("jmenostorage", '3e83e4a3-767b-f74c-49d6-84a6ca37b045', 1024*1024)
 
 
     # print(xen.get_vm_info(xen.fuckit()[0]))

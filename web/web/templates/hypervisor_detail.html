@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ hypervisor.name }}</title>
+</head>
+<body>
+    <h1>{{ hypervisor.name }}</h1>
+    <p>Type: {{ hypervisor.get_type_display }}</p>
+    <p>Address: {{ hypervisor.address }}</p>
+    <p>Username: {{ hypervisor.username }}</p>
+    <a href="{% url 'hypervisor_edit' hypervisor.pk %}">Edit</a>
+    <a href="{% url 'hypervisor_list' %}">Back to list</a>
+</body>
+</html>

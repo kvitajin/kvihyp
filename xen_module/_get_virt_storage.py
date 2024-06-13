@@ -12,7 +12,7 @@ def get_virt_storage(self, print_storage=False):
             storage_used = int(storage["physical_utilisation"])
             storage_free = storage_max - storage_used
             if storage_max != 0:
-                used_perc= storage_used / storage_max * 100
+                used_perc = storage_used / storage_max * 100
             else:
                 used_perc = 0
             print(f'Storage: {storage["name_label"]}\n\t'

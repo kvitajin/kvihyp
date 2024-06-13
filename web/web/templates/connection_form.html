@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connection Form</title>
+</head>
+<body>
+    <h1>Connection Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'hypervisor_list' %}">Back to list</a>
+</body>
+</html>

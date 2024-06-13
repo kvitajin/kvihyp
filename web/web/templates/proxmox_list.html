@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Proxmox module</title>
+</head>
+<body>
+
+<h1>Proxmox</h1>
+<ul>
+    {% for item in proxmox %}
+    <li>
+        <a href="{% url 'proxmox_detail' proxmox.pk %}">{{ item.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

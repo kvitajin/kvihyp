@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hypervisors</title>
+</head>
+<body>
+    <h1>Hypervisors</h1>
+    <ul>
+        {% for hypervisor in hypervisors %}
+        <li>
+            <a href="{% url 'hypervisor_detail' hypervisor.pk %}">{{ hypervisor.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+<h2>Existed connections:</h2>
+    <ul>
+        {% for connection in connections %}
+        <li>
+            <a href="{% url 'connection_detail' connection.pk %}">{{ connection.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'connection_create' %}">New connection</a>
+
+
+</body>
+</html>

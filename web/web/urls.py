@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.hypervisor_list, name='hypervisor_list'),
+    path('hypervisor/<int:pk>/', views.hypervisor_detail, name='hypervisor_detail'),
+    path('connection/new/', views.connection_create, name='connection_create'),
+    path('proxmox/', views.proxmox_list, name='proxmox_list'),
 ]
