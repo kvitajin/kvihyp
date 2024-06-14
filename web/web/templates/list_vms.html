@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{hypervisor}} virtual machines list</title>
+</head>
+<body>
+    <h1>{{hypervisor}} virtual machines list</h1>
+
+    <ul>
+        {% for item in vms %}
+        <li>
+            <p>{{item.name}}</p>
+            <ul>
+                <li>CPUs: {{item.cpus}}</li>
+                <li>CPU usage: {{item.cpu_usage}}%</li>
+                <li>Status: {{item.status}}</li>
+                <li>Max memory: {{item.maxmem}}GiB</li>
+                <li>Memory usage: {{item.mem_usage}}GiB</li>
+                <li>vmid: {{item.vmid}}</li>
+                <li>Uptime: {{item.uptime}}</li>
+            </ul>
+
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

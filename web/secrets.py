@@ -6,7 +6,8 @@ PROXMOX_USERNAME_AT = 'root@pam'
 PROXMOX_PASSWORD = 'bulanci'
 PROXMOX_USERNAME = 'root'
 
-XEN_HOST = 'https://192.168.2.102:443'
+# XEN_HOST = 'https://192.168.2.102:443'
+XEN_HOST = 'https://xcp-ng.lan:443'
 # XEN_HOST = ('http://localhost:8080')
 XEN_USERNAME = 'root'
 XEN_PASSWORD = 'bulanci'

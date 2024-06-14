@@ -18,7 +18,11 @@ from ._launch_spice_viewer import launch_spice_viewer
 
 
 class Proxmox(object):
-    def __init__(self):
+    def __init__(self,
+                 http_host=secrets.PROXMOX_HTTP_HOST,
+                 password=secrets.PROXMOX_PASSWORD,
+                 username=secrets.PROXMOX_USERNAME,
+                 ip_host=secrets.PROXMOX_IP_HOST):
 
         self.session = ""
         self.nodes_response = ""
@@ -29,11 +33,11 @@ class Proxmox(object):
         self.spice_config = ""
 
         # TODO udelat nabidku, kde se zapise
-        self.PROXMOX_HTTP_HOST = secrets.PROXMOX_HTTP_HOST
-        self.PROXMOX_USERNAME_AT = secrets.PROXMOX_USERNAME_AT
-        self.PROXMOX_PASSWORD = secrets.PROXMOX_PASSWORD
-        self.PROXMOX_USERNAME = secrets.PROXMOX_USERNAME
-        self.PROXMOX_IP_HOST = secrets.PROXMOX_IP_HOST
+        self.PROXMOX_HTTP_HOST = http_host
+        self.PROXMOX_USERNAME_AT = username + '@pam'
+        self.PROXMOX_PASSWORD = password
+        self.PROXMOX_USERNAME = username
+        self.PROXMOX_IP_HOST = ip_host
 
         Proxmox.get_nodes = get_nodes
         Proxmox.list_vms = list_vms

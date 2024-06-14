@@ -10,9 +10,10 @@
 <ul>
     {% for item in proxmox %}
     <li>
-        <a href="{% url 'proxmox_detail' proxmox.pk %}">{{ item.name }}</a>
+        <a href="{% url 'vm_list' hypervisor='proxmox' node=item %}">{{item}}</a>
     </li>
     {% endfor %}
 </ul>
+
 </body>
 </html>

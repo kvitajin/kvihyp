@@ -22,6 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.hypervisor_list, name='hypervisor_list'),
     path('hypervisor/<int:pk>/', views.hypervisor_detail, name='hypervisor_detail'),
-    path('connection/new/', views.connection_create, name='connection_create'),
+    path('connections/new/', views.connection_create, name='connection_create'),
     path('proxmox/', views.proxmox_list, name='proxmox_list'),
+    path('<str:hypervisor>/<str:node>/', views.vm_list, name='vm_list'),
+    path('connections', views.connections, name='connections'),
+    path('connections/<int:db_connection_id>', views.connections_detail, name='connections_detail'),
+
 ]

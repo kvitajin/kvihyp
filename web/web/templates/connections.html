@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of connected servers</title>
+</head>
+<body>
+    <h1>List of connected servers</h1>
+    <ul>
+        {% for item in connections %}
+        <li>
+            <a href="{% url 'connections_detail' db_connection_id=item.id %}">{{item.type}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
