@@ -1,8 +1,10 @@
 import datetime
 
 
-def list_vms(self, print_vms=False):
-    for node_name in self.get_nodes():
+def list_vms(self, print_vms=False, node_names=None):
+    if not node_names:
+        self.get_nodes()
+    for node_name in node_names:
         vms_url = f'{self.PROXMOX_HTTP_HOST}/nodes/{node_name}/qemu/'
         vm_response = self.session.get(vms_url, verify=False)
         self.vms = vm_response.json()

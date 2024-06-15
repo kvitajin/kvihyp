@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{data.type}} list of nodes </title>
+</head>
+<body>
+    <h1>{{data.type}} list of nodes</h1>
+
+    <ul>
+         {% for node in data.nodes %}
+        <li>
+            <a href="{% url 'list_vms' db_connection_id=data.connection_id node_name=node %}">{{node}}</a>
+
+        </li>
+        {% endfor %}
+
+    </ul>
+
+
+</body>
+</html>

@@ -54,7 +54,6 @@ class Proxmox(object):
         Proxmox.get_spice_config = get_spice_config
         Proxmox.launch_spice_viewer = launch_spice_viewer
 
-
         auth_url = f'{self.PROXMOX_HTTP_HOST}/access/ticket'
         auth_data = {'username': self.PROXMOX_USERNAME_AT, 'password': self.PROXMOX_PASSWORD}
         response = requests.post(auth_url, data=auth_data, verify=False)

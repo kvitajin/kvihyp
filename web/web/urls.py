@@ -24,8 +24,11 @@ urlpatterns = [
     path('hypervisor/<int:pk>/', views.hypervisor_detail, name='hypervisor_detail'),
     path('connections/new/', views.connection_create, name='connection_create'),
     path('proxmox/', views.proxmox_list, name='proxmox_list'),
-    path('<str:hypervisor>/<str:node>/', views.vm_list, name='vm_list'),
     path('connections', views.connections, name='connections'),
-    path('connections/<int:db_connection_id>', views.connections_detail, name='connections_detail'),
+    path('connections/<int:db_connection_id>', views.node_list, name='node_list'),
+    #TODO  path('connections/<int:db_connection_id>/<str:node_name>', views.list_vms, name='list_vms'),
+    path('connections/<int:db_connection_id>/<str:node_name>/vms', views.list_vms, name='list_vms'),
+    path('connections/<int:db_connection_id>/<str:node_name>/storages', views.list_storages, name='list_storages'),
+    path('connections/<int:db_connection_id>/<str:node_name>/storages/<str:storage_name>', views.storage_detail, name='storage_detail'),
 
 ]

@@ -17,5 +17,5 @@ urls
     /connections/<int:db_connection_id>/<str:node> vrati informace jednoho nodu (pve-precision)
     /connections/<int:db_connection_id>/<str:node>/vms vrati seznam vsech vm na jednom nodu
     /connections/<int:db_connection_id>/<str:node>/storages vrati seznam vsech storage na jednom nodu
-    /connections/<int:db_connection_id>/<str:node>/vms/<string:vmid> vrati informace o jedne vm
-
+    /connections/<int:db_connection_id>/<str:node>/vms/<str:vmid> vrati informace o jedne vm
+    /connections/<int:db_connection_id>/<str:node>/storages/<str:name> vrati detail jednoho storage

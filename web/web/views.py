@@ -4,6 +4,12 @@ from .models import Connection
 from .forms import HypervisorForm
 from .forms import ConnectionForm
 from proxmox_module import Proxmox
+import subprocess
+
+def wifi_check():
+    if "UT99_5g" not in subprocess.check_output("iw dev | grep ssid", shell=True).decode("utf-8"):
+        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA SPATNA WIFI')
+
 
 def hypervisor_list(request):
     hypervisors = Web.objects.all()
@@ -59,29 +65,82 @@ def proxmox_list(request):
     data = proxmox.get_nodes()
     return render(request, 'proxmox_list.html', {'proxmox': data})
 
-def vm_list(request, hypervisor, node):
-    if hypervisor == 'proxmox':
-        proxmox = Proxmox()
-        data = proxmox.list_vms()
-        # print(data)
-        data = sorted(data, key=lambda item: item['vmid'])
-        return render(request, 'list_vms.html', {'vms': data, 'hypervisor': hypervisor, 'node': node})
+# def vm_list(request, hypervisor, node):
+#     if hypervisor == 'proxmox':
+#         proxmox = Proxmox()
+#         data = proxmox.list_vms()
+#         # print(data)
+#         data = sorted(data, key=lambda item: item['vmid'])
+#         return render(request, 'list_vms.html', {'vms': data, 'hypervisor': hypervisor, 'node': node})
+
 
 def connections(request):
+    wifi_check()
     connections = Connection.everything()
     # print(f'here: {connections}')
     return render(request, 'connections.html', {'connections': connections})
 
-def connections_detail(request, db_connection_id):
-    # connections = get_object_or_404(Connection, pk=db_connection_id)
-    # print(f'here: {connections}')
-    # TODO - nenacita z proxmoxu, jen z db
-    connection = Connection.objects.get(id=db_connection_id)
-    print(f'http?host: {connection.http_host}, password: {connection.password}, username: {connection.username}, ip_host: {connection.host}')
-    connections = Proxmox(http_host=connection.http_host,
-                 password=connection.password,
-                 username=connection.username,
-                 ip_host=connection.host)
-    data = connections.get_nodes()
-    print(f'totok: {data}')
-    return render(request, 'connections_detail.html', {'connection': connections})
+
+def node_list(request, db_connection_id):
+    connection = get_object_or_404(Connection, id=db_connection_id)
+    if connection.type == 'Proxmox':
+        conn = Proxmox(http_host=connection.http_host,
+                             password=connection.password,
+                             username=connection.username,
+                             ip_host=connection.host)
+        data = conn.get_nodes()
+        # print(data)
+        # print(vars(conn))
+        transfer = {"connection_id": connection.id, "type": connection.type, "nodes": data}
+        # TODO potrebuju connection.type (proxmox), conn.id(1), conn.nodes(pve)
+        return render(request, 'node_list.html', {'data': transfer})
+
+def list_vms(request, db_connection_id, node_name):
+    connection = get_object_or_404(Connection, id=db_connection_id)
+    # print (f'Connection: {connection.type}')
+    if connection.type == 'Proxmox':
+        # print(f'Connection: {connection}')
+        proxmox = Proxmox(http_host=connection.http_host,
+                             password=connection.password,
+                             username=connection.username,
+                             ip_host=connection.host)
+        node_names = [node_name]
+        data = proxmox.list_vms(node_names=node_names)
+        # print("im here")
+        data = sorted(data, key=lambda item: item['vmid'])
+        return render(request, 'list_vms.html',
+                      {'vms': data,
+                       'hypervisor': 'Proxmox',
+                       'node': node_name,
+                       'db_connection_id': db_connection_id})
+
+def list_storages(request, db_connection_id, node_name):
+    connection = get_object_or_404(Connection, id=db_connection_id)
+    if connection.type == 'Proxmox':
+        proxmox = Proxmox(http_host=connection.http_host,
+                             password=connection.password,
+                             username=connection.username,
+                             ip_host=connection.host)
+        node_names = [node_name]
+        data = proxmox.get_virt_storage(node_names=node_names)
+        return render(request, 'list_storages.html',
+                      {'storages': data,
+                       'hypervisor': 'Proxmox',
+                       'node': node_name,
+                       'db_connection_id': db_connection_id})
+
+def storage_detail(request, db_connection_id, node_name, storage_name):
+    connection = get_object_or_404(Connection, id=db_connection_id)
+    if connection.type == 'Proxmox':
+        proxmox = Proxmox(http_host=connection.http_host,
+                             password=connection.password,
+                             username=connection.username,
+                             ip_host=connection.host)
+        data = proxmox.get_virt_detail(node_name=node_name, storage_name=storage_name)
+        print(data)
+        return render(request, 'storage_detail.html',
+                      {'data': data,
+                       'hypervisor': 'Proxmox',
+                       'node': node_name,
+                       'storage': storage_name,
+                       'db_connection_id': db_connection_id})

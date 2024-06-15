@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{hypervisor}} virtual storages list at {{node}} </title>
+</head>
+<body>
+    <h1>{{hypervisor}} virtual storages list at {{node}}</h1>
+    <ul>
+        {% for item in storages %}
+        <li>
+            <a href="{% url 'storage_detail' db_connection_id=db_connection_id node_name=node storage_name=item.storage %}">{{item.storage}}</a>
+            <ul>
+                <li>Size: {{item.total}}GiB</li>
+                <li>Used: {{item.used}}GiB</li>
+                <li>Free: {{item.avail}}GiB</li>
+                <li>Type: {{item.type}}</li>
+                <li>Enabled: {{item.enabled}}</li>
+            </ul>
+        </li>
+        </br>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

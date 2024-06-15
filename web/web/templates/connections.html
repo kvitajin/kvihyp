@@ -9,7 +9,7 @@
     <ul>
         {% for item in connections %}
         <li>
-            <a href="{% url 'connections_detail' db_connection_id=item.id %}">{{item.type}}</a>
+            <a href="{% url 'node_list' db_connection_id=item.id %}">{{item.type}}</a>
         </li>
         {% endfor %}
     </ul>
