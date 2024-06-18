@@ -11,11 +11,11 @@ list_vms
 
 urls
     / nechat tak, nebo status
-    /connections vrati seznam vsech pripojenych instanci spojeni
-    /connections/<int:db_connection_id> vrati serverz jednoho serveru
+ok    /connections vrati seznam vsech pripojenych instanci spojeni
+ok    /connections/<int:db_connection_id> vrati serverz jednoho serveru
     /connections/any/ ber vsechny spojeni
     /connections/<int:db_connection_id>/<str:node> vrati informace jednoho nodu (pve-precision)
-    /connections/<int:db_connection_id>/<str:node>/vms vrati seznam vsech vm na jednom nodu
-    /connections/<int:db_connection_id>/<str:node>/storages vrati seznam vsech storage na jednom nodu
+ok    /connections/<int:db_connection_id>/<str:node>/vms vrati seznam vsech vm na jednom nodu
+ok    /connections/<int:db_connection_id>/<str:node>/storages vrati seznam vsech storage na jednom nodu
     /connections/<int:db_connection_id>/<str:node>/vms/<str:vmid> vrati informace o jedne vm
     /connections/<int:db_connection_id>/<str:node>/storages/<str:name> vrati detail jednoho storage

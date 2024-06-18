@@ -44,3 +44,4 @@ class Connection(models.Model):
         for connection in Connection.objects.all():
             data.append(connection)
         return data
+

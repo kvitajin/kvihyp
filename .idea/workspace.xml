@@ -5,18 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0664d923-86a1-4ff5-96d3-7739d7c59f3e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/web/web/templates/node_list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/web/templates/storage_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/web/templates/storage_create.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/specka" beforeDir="false" afterPath="$PROJECT_DIR$/specka" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/proxmox_module/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_create_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_create_virt_storage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/proxmox_module/_get_virt_detail.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_get_virt_detail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_get_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_get_virt_storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_list_vms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_list_vms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/web/templates/connections.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/templates/connections.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/web/templates/connections_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/templates/list_storages.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/web/templates/hypervisor_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/templates/hypervisor_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_start_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_start_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_stop_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_stop_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_suspend_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_suspend_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/secrets.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/my_secrets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/web/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/web/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/templates/list_vms.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/templates/list_vms.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/web/templates/storage_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/templates/storage_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/views.py" afterDir="false" />
     </list>
@@ -82,7 +84,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Language Defaults&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -119,8 +121,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.17011.127" />
-        <option value="bundled-python-sdk-48aec45f0201-7e9c3bbb6e34-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.17011.127" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.17890.14" />
+        <option value="bundled-python-sdk-5b207ade9991-7e9c3bbb6e34-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.17890.14" />
       </set>
     </attachedChunks>
   </component>
@@ -153,6 +155,12 @@
       <workItem from="1717758123672" duration="2654000" />
       <workItem from="1717866192331" duration="34459000" />
       <workItem from="1718094278068" duration="65358000" />
+      <workItem from="1718545018011" duration="11913000" />
+      <workItem from="1718609481694" duration="6582000" />
+      <workItem from="1718621761858" duration="3412000" />
+      <workItem from="1718637136006" duration="2505000" />
+      <workItem from="1718639994462" duration="111000" />
+      <workItem from="1718712882108" duration="3530000" />
     </task>
     <servers />
   </component>

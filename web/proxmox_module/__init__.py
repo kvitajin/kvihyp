@@ -1,4 +1,4 @@
-import secrets
+import my_secrets
 import requests
 from ._get_nodes import get_nodes
 from ._list_vms import list_vms
@@ -19,10 +19,10 @@ from ._launch_spice_viewer import launch_spice_viewer
 
 class Proxmox(object):
     def __init__(self,
-                 http_host=secrets.PROXMOX_HTTP_HOST,
-                 password=secrets.PROXMOX_PASSWORD,
-                 username=secrets.PROXMOX_USERNAME,
-                 ip_host=secrets.PROXMOX_IP_HOST):
+                 http_host=my_secrets.PROXMOX_HTTP_HOST,
+                 password=my_secrets.PROXMOX_PASSWORD,
+                 username=my_secrets.PROXMOX_USERNAME,
+                 ip_host=my_secrets.PROXMOX_IP_HOST):
 
         self.session = ""
         self.nodes_response = ""

@@ -19,6 +19,17 @@
                 <li>Memory usage: {{item.mem_usage}}GiB</li>
                 <li>vmid: {{item.vmid}}</li>
                 <li>Uptime: {{item.uptime}}</li>
+            <button type="button" onclick="window.location.href='{% url 'vm_start' db_connection_id=db_connection_id node_name=node vmid=item.vmid %}'">
+                Start VM
+            </button>
+            <button type="button" onclick="window.location.href='{% url 'vm_suspend' db_connection_id=db_connection_id node_name=node vmid=item.vmid %}'">
+                Suspend VM
+            </button>
+            <button type="button" onclick="window.location.href='{% url 'vm_stop' db_connection_id=db_connection_id node_name=node vmid=item.vmid %}'">
+                Resume VM
+            </button>
+
+
             </ul>
 
         </li>

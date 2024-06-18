@@ -6,6 +6,7 @@ class HypervisorForm(forms.ModelForm):
         model = Web
         fields = ['name', 'type', 'address', 'username', 'password']
 
+
 class ConnectionForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
@@ -14,3 +15,6 @@ class ConnectionForm(forms.ModelForm):
     def http_host(self):
         self.cleaned_data['http_host'] = 'https://' + self.cleaned_data.get('host') + ':8006/api2/json'
         return self.cleaned_data['http_host']
+class StorageForm(forms.Form):
+        size = forms.FloatField(label='Size in GB')
+        vmid = forms.CharField(label='VM ID')

@@ -1,7 +1,10 @@
 # TODO nastavit cestu k isu... list existujicich is?
 
-def create_virt_storage(self, storage, vmid, size):
-    url = f'{self.PROXMOX_HTTP_HOST}/nodes/{self.get_nodes()[0]}/storage/{storage}/content'
+def create_virt_storage(self, storage, vmid, size, node_name=None):
+    if not node_name:
+        node_name = self.get_nodes()[0]
+    print("IM in create storage")
+    url = f'{self.PROXMOX_HTTP_HOST}/nodes/{node_name}/storage/{storage}/content'
     data = {'vmid': vmid,
             'filename': f"vm-{vmid}-disk-1",
             'size': size,

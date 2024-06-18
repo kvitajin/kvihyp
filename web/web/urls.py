@@ -28,7 +28,13 @@ urlpatterns = [
     path('connections/<int:db_connection_id>', views.node_list, name='node_list'),
     #TODO  path('connections/<int:db_connection_id>/<str:node_name>', views.list_vms, name='list_vms'),
     path('connections/<int:db_connection_id>/<str:node_name>/vms', views.list_vms, name='list_vms'),
+    # path('connections/<int:db_connection_id>/<str:node_name>/vms/<int:vmid>', views.vm_detail, name='vm_detail'),
     path('connections/<int:db_connection_id>/<str:node_name>/storages', views.list_storages, name='list_storages'),
+    path('connections/<int:db_connection_id>/<str:node_name>/storages/create', views.storage_create, name='storage_create'),
     path('connections/<int:db_connection_id>/<str:node_name>/storages/<str:storage_name>', views.storage_detail, name='storage_detail'),
+    path('connections/<int:db_connection_id>/<str:node_name>/vms/<int:vmid>/start', views.vm_start, name='vm_start'),
+    path('connections/<int:db_connection_id>/<str:node_name>/vms/<int:vmid>/suspend', views.vm_suspend, name='vm_suspend'),
+    path('connections/<int:db_connection_id>/<str:node_name>/vms/<int:vmid>/stop', views.vm_stop, name='vm_stop '),
+
 
 ]

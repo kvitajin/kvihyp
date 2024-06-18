@@ -7,13 +7,16 @@
 <body>
     <h1>Storage detail of {{storage}}</h1>
     {% for item in data %}
-        <ul>
-            <li>Content {{item.content}}</li>
-            <li>Format: {{item.format}}</li>
-            <li>Size: {{line.size}}GiB</li>
-            <li>Used: {{line.used}}GiB</li>
-        </ul>
+        <p>{{item.volid}}</p>
+        {% for key, value in item.items %}
+            <ul>
+            {% if key != 'volid' %}
+                <li>{{key}}: {{value}}</li>
+            {% endif %}
+            </ul>
 
+        {% endfor %}
+    <br>
     {% endfor %}
 
     <a href="{% url 'list_storages' db_connection_id=db_connection_id node_name=node %}">Back to storages list</a>
