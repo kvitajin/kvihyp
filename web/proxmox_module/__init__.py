@@ -15,6 +15,8 @@ from ._get_virt_detail import get_virt_detail
 # from proxmox_module._get_nodes import get_nodes
 from ._get_spice_config import get_spice_config
 from ._launch_spice_viewer import launch_spice_viewer
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 
 
 class Proxmox(object):
@@ -31,6 +33,8 @@ class Proxmox(object):
         self.csrf_token = ""
         self.vms = ""
         self.spice_config = ""
+
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
         # TODO udelat nabidku, kde se zapise
         self.PROXMOX_HTTP_HOST = http_host
@@ -66,6 +70,10 @@ class Proxmox(object):
         self.session.headers.update(self.csrf_token)
         self.session.cookies['PVEAuthCookie'] = self.ticket
         self.ticket = {'PVEAuthCookie': self.ticket}
+        retries = requests.adapters.HTTPAdapter(max_retries=3)
+        self.session.mount('http://', retries)
+        self.session.mount('https://', retries)
+        self.session.verify = False
 
         nodes_url = f'{self.PROXMOX_HTTP_HOST}/nodes'
         self.nodes_response = self.session.get(nodes_url, verify=False)

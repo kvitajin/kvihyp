@@ -1,8 +1,9 @@
-def create_vm(self, name, cores, memory, vmid, disk_size, storage="local-lvm"):
+def create_vm(self, name, cores, memory, disk_size, storage="local-lvm", node_name=None):
+    print("create_vm xen")
     if not self.session_id:
         print("Nejste přihlášeni")
         return
-    dry_run = True
+    dry_run = False
     # get default SR
     # default_sr = self.server.VM.get_by_name_label(self.session_id, "Local storage")['Value']
     # print(f'sr {default_sr}')
@@ -10,13 +11,13 @@ def create_vm(self, name, cores, memory, vmid, disk_size, storage="local-lvm"):
     alls = self.server.network.get_all_records(self.session_id)
     network = self.server.network.get_all(self.session_id)['Value']
     network_details = self.server.network.get_record(self.session_id, network[0])
-    print(f'network {network}')
-    print(f'network details {network_details["Value"]},\ntmp {alls["Value"]}')
+    # print(f'network {network}')
+    # print(f'network details {network_details["Value"]},\ntmp {alls["Value"]}')
     zaz = self.server.VIF.get_all(self.session_id)
-    print(f'zaz {zaz}')
+    # print(f'zaz {zaz}')
 
 
-    print(self.server.VIF.get_network(self.session_id, zaz['Value'][0]))
+    # print(self.server.VIF.get_network(self.session_id, zaz['Value'][0]))
     # get host
     # host = self.server.host.get_all(self.session_id)['Value']
     # host_full = self.server.host.get_record(self.session_id, host[0])
@@ -37,7 +38,7 @@ def create_vm(self, name, cores, memory, vmid, disk_size, storage="local-lvm"):
     self.server.VM.set_vCPUs_number(self.session_id, vm_ref, cores)
     # self.server.VM.set_name_description(self.session_id, tmp['Value'], description)
     vif = self.server.VM.get_VIFs(self.session_id, vm_ref)
-    print(f'vif {vif}')
+    # print(f'vif {vif}')
     self.server.VM.set_VIFs(self.session_id, vif)
     if dry_run:
         print(f"Virtuální stroj {name} byl vytvořen úspěšně (dry run)")

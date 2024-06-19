@@ -1,4 +1,4 @@
-def delete_vm(self, vmid):
+def delete_vm(self, vmid, node_name = None):
     if not self.session_id:
         print("Nejste přihlášeni")
         return

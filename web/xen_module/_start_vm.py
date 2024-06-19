@@ -1,10 +1,10 @@
-def start_vm(self, vmid):
+def start_vm(self, vmid, node_name=None):
     if not self.session_id:
         print("Nejste přihlášeni")
         return
     opaque_ref = self.server.VM.get_by_uuid(self.session_id, vmid)['Value']
     state = self.server.VM.get_power_state(self.session_id, opaque_ref)['Value']
-    # print(f'state_from_start_vm: {state}')
+    print(f'state_from_start_vm: {state}')
     if state == "Running":
         print("Virtuální stroj je již spuštěn")
         return

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create VM</title>
+</head>
+<body>
+<h1>Create VM</h1>
+<form method="POST" >
+    {% csrf_token %}
+     {{form.as_p }}
+    <button type="submit">Create VM</button>
+</form>
+</body>
+</html>

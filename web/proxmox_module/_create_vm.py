@@ -1,8 +1,10 @@
-def create_vm(self, name, cores, memory, vmid, disk_size, storage="local-lvm"):
-    if not self.nodes:
-        create_url = f'{self.PROXMOX_HTTP_HOST}/nodes/{self.get_nodes()[0]}/qemu'
-    else:
-        create_url = f'{self.PROXMOX_HTTP_HOST}/nodes/{self.nodes[0]}/qemu'
+def create_vm(self, name, cores, memory, disk_size, storage="local-lvm", vmid=None, node_name=None):
+    if not node_name:
+        node_name = self.get_nodes()[0]
+    create_url = f'{self.PROXMOX_HTTP_HOST}/nodes/{node_name}/qemu'
+
+    if not vmid:
+        vmid = self.get_max_vmid() + 1
 
     virtio = f'{storage}:vm-{vmid}-disk-1'
     data = {

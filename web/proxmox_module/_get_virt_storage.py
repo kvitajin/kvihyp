@@ -2,7 +2,7 @@ def get_virt_storage(self, print_storage=False, node_names=None):
     # function which create new virtual machine
     # arguments: vm_name, max memory, cpus
     if not node_names:
-        self.get_nodes()
+        node_names = self.get_nodes()[0]
     data = []
     for node_name in node_names:
         url = f'{self.PROXMOX_HTTP_HOST}/nodes/{node_name}/storage'

@@ -4,10 +4,9 @@ from humanfriendly import format_timespan
 
 
 
-def get_vms(self, print_vms=False):
+def get_vms(self, print_vms=False, node_name=None):
     data = []
     all_vm_refs = self.server.VM.get_all(self.session_id)['Value']
-    # print(f'fuckit: {fuckit}')
     for i in all_vm_refs:
         data.append(self.server.VM.get_record(self.session_id, i))
 
@@ -16,7 +15,7 @@ def get_vms(self, print_vms=False):
     # print(self.server.host_metrics.get_memory_total(self.session_id, host_ref['Value'][0]))
     # print(self.server.host_metrics.get_uuid(self.session_id, host_ref['Value'][0]))
     metrics = []
-    print("----------------------Pamet-----------------------------")
+    # print("----------------------Pamet-----------------------------")
     for i in self.server.VM_metrics.get_all(self.session_id)['Value']:
         # print(f'VSE: {i}\n')
         mem_cur = (self.server.VM_metrics.get_memory_actual(self.session_id, i))        #TODO ukazuje to skutecne aktualni spotrebu ram?
@@ -106,17 +105,33 @@ def get_vms(self, print_vms=False):
 
     #TODO  https: // xapi - project.github.io / xen - api / classes / vm_metrics.html
     #
-    # else:
-    #     formdata = []
-    #     for row in data:
-    #         row = row['Value']
-    #         data_metrics = next((met for met in metrics if met["ref"] == row["metrics"]), None)
-    #         formdata.append({'name': row["name_label"],
-    #                          'cpus': row["VCPUs_max"],
-    #                          'cpu_usage': str("{:.2f}".format(vm["cpu"] * 100)),
-    #                          'status': row["power_state"],
-    #                          'vmid': row["uuid"],
-    #                          'maxmem': str(int(row["memory_dynamic_max"]) / 1024 / 1024),
-    #                          'mem_usage': str("{:.3f}".format(vm["mem"] / 1024 / 1024 / 1024)),
-    #                          'uptime': str(datetime.timedelta(seconds=vm["uptime"]))})
-    # return data
+    else:
+        formdata = []
+        for row in data:
+            row = row['Value']
+            if row['is_a_template']:
+                continue
+            data_metrics = [met for met in metrics if met["ref"] == row["metrics"]]
+            if not data_metrics:
+                data_metrics = [{'ref': '', 'mem': '0', 'uptime': '0', 'guest': ''}]
+
+            # print(f'guest z data metrik: {data_metrics[0]["guest"]}')
+            # print(f'opaque: {row["metrics"]}')
+            # network = guest[str(tmp)]
+            formdata.append({'name': row["name_label"],
+                             'vmid': row['uuid'],
+                             'OpaqueRef_metrics': row['metrics'],
+                             'status': row['power_state'],
+                             'cpus': row['VCPUs_max'],
+                             'uptime': data_metrics[0]['uptime'],
+                             'consoles': row['consoles'],
+                             'mem_usage': data_metrics[0]["mem"],
+                             'maxmem': str(int(row["memory_dynamic_max"]) / 1024 / 1024)}
+                            )
+        return formdata
+
+
+
+
+
+

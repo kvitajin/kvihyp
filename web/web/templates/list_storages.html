@@ -9,7 +9,7 @@
     <ul>
         {% for item in storages %}
         <li>
-            <a href="{% url 'storage_detail' db_connection_id=db_connection_id node_name=node storage_name=item.storage %}">{{item.storage}}</a>
+            <p>{{item.storage}}</p>
             <ul>
                 <li>Size: {{item.total}}GiB</li>
                 <li>Used: {{item.used}}GiB</li>

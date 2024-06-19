@@ -1,4 +1,4 @@
-import secrets
+import my_secrets
 import xmlrpc.client
 import ssl
 from ._delete_vm import delete_vm
@@ -15,7 +15,10 @@ from ._get_virt_storage import get_virt_storage
 from ._create_virt_storage import create_virt_storage
 
 class Xen(object):
-    def __init__(self):
+    def __init__(self,
+                 xen_host=my_secrets.XEN_HOST,
+                 xen_username=my_secrets.XEN_USERNAME,
+                 xen_password=my_secrets.XEN_PASSWORD):
         self.session_id = ""
         self.server = ""
         self.session = ""
@@ -26,10 +29,10 @@ class Xen(object):
         self.vms = ""
         self.spice_config = ""
 
-        self.XEN_HOST = secrets.XEN_HOST
+        self.XEN_HOST = xen_host
 
-        self.XEN_USERNAME = secrets.XEN_USERNAME
-        self.XEN_PASSWORD = secrets.XEN_PASSWORD
+        self.XEN_USERNAME = xen_username
+        self.XEN_PASSWORD = xen_password
 
         Xen.delete_vm = delete_vm
         Xen.get_templates = get_templates
@@ -51,15 +54,18 @@ class Xen(object):
         # Proxmox.get_virt_detail = get_virt_detail
         # Proxmox.get_spice_config = get_spice_config
         # Proxmox.launch_spice_viewer = launch_spice_viewer
-
-
-
-
-        self.server = xmlrpc.client.ServerProxy(secrets.XEN_HOST, context=ssl._create_unverified_context())
+        print("vytvarim xen")
+        self.server = xmlrpc.client.ServerProxy(self.XEN_HOST, context=ssl._create_unverified_context())
+        print("vytvarim xen")
+        print(self.server)
         self.session_id = self.login()
+        print("jedu")
+
+
 
     def login(self):
-        result = self.server.session.login_with_password(secrets.XEN_USERNAME, secrets.XEN_PASSWORD, "2.0", "python-script")
+
+        result = self.server.session.login_with_password(self.XEN_USERNAME, self.XEN_PASSWORD, "2.0", "python-script")
         session_id = result['Value']
         if session_id:
             print("Přihlášení úspěšné, session ID:", session_id)
