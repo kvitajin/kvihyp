@@ -55,31 +55,10 @@ def hypervisor_create(request):
     return render(request, 'hypervisor_form.html', {'form': form})
 
 
-# def hypervisor_edit(request, pk):
-#     hypervisor = get_object_or_404(web, pk=pk)
-#     if request.method == 'POST':
-#         form = HypervisorForm(request.POST, instance=hypervisor)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('hypervisor_list')
-#     else:
-#         form = HypervisorForm(instance=hypervisor)
-#     return render(request, 'hypervisors/hypervisor_form.html', {'form': form})
-
-
 def proxmox_list(request):
     proxmox = Proxmox()
     data = proxmox.get_nodes()
     return render(request, 'proxmox_list.html', {'proxmox': data})
-
-
-# def vm_list(request, hypervisor, node):
-#     if hypervisor == 'proxmox':
-#         proxmox = Proxmox()
-#         data = proxmox.list_vms()
-#         # print(data)
-#         data = sorted(data, key=lambda item: item['vmid'])
-#         return render(request, 'list_vms.html', {'vms': data, 'hypervisor': hypervisor, 'node': node})
 
 
 def connections(request):
@@ -99,28 +78,21 @@ def node_list(request, db_connection_id):
                                                            ip_host=connection.host)
         proxmox = single_connections[db_connection_id]
         data = proxmox.get_nodes()
-        # print(data)
-        # print(vars(conn))
 
     elif connection.type == 'Xen':
         if single_connections.get(db_connection_id) is None:
-            # print(f'Connection: {connection} {connection.host}  {connection.username}  {connection.password}'
-
             single_connections[db_connection_id] = Xen(xen_host=connection.host,
                                                        xen_username=connection.username,
                                                        xen_password=connection.password)
         xen = single_connections[db_connection_id]
         data = xen.get_nodes()
     transfer = {"connection_id": connection.id, "type": connection.type, "nodes": data}
-    # TODO potrebuju connection.type (proxmox), conn.id(1), conn.nodes(pve)
     return render(request, 'node_list.html', {'data': transfer})
 
 
 def list_vms(request, db_connection_id, node_name):
     connection = get_object_or_404(Connection, id=db_connection_id)
-    # print (f'Connection: {connection.type}')
     if connection.type == 'Proxmox':
-        # print(f'Connection: {connection}')
         if single_connections.get(db_connection_id) is None:
             single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
                                                            password=connection.password,
@@ -210,7 +182,16 @@ def storage_create(request, db_connection_id, node_name):
                                                    storage='local-hdd',
                                                    vmid=form.cleaned_data['vmid'],
                                                    size=form.cleaned_data['size'])
-                return render(request, 'storage_create.html',
+            elif connection.type == "Xen":
+                if single_connections.get(db_connection_id) is None:
+                    single_connections[db_connection_id] = Xen(xen_host=connection.host,
+                                                               xen_username=connection.username,
+                                                               xen_password=connection.password)
+                conn = single_connections[db_connection_id]
+                data = conn.create_virt_storage(storage='Local storage',
+                                                vmid=form.cleaned_data['vmid'],
+                                                size=form.cleaned_data['size'])
+        return render(request, 'storage_create.html',
                               {'form': form})
     else:
         form = StorageForm()

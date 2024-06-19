@@ -18,7 +18,7 @@ class ConnectionForm(forms.ModelForm):
 
 
 class StorageForm(forms.Form):
-        size = forms.FloatField(label='Size in GB')
+        size = forms.IntegerField(label='Size in GB')
         vmid = forms.CharField(label='VM ID')
 
 
