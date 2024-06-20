@@ -1,4 +1,4 @@
-import my_secrets
+# from web import my_secrets
 import xmlrpc.client
 import ssl
 from ._delete_vm import delete_vm
@@ -13,6 +13,10 @@ from ._suspend_vm import suspend_vm
 from ._open_console import open_console
 from ._get_virt_storage import get_virt_storage
 from ._create_virt_storage import create_virt_storage
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import my_secrets
 
 class Xen(object):
     def __init__(self,
@@ -47,13 +51,7 @@ class Xen(object):
         Xen.open_console = open_console
         Xen.get_virt_storage = get_virt_storage
         Xen.create_virt_storage = create_virt_storage
-        # Proxmox.list_vms = list_vms
-        # Proxmox.get_virt_storage = get_virt_storage
-        # Proxmox.create_virt_storage = create_virt_storage
 
-        # Proxmox.get_virt_detail = get_virt_detail
-        # Proxmox.get_spice_config = get_spice_config
-        # Proxmox.launch_spice_viewer = launch_spice_viewer
         print("vytvarim xen")
         self.server = xmlrpc.client.ServerProxy(self.XEN_HOST, context=ssl._create_unverified_context())
         print("vytvarim xen")

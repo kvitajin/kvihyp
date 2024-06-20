@@ -1,4 +1,3 @@
-import my_secrets
 import requests
 from ._get_nodes import get_nodes
 from ._list_vms import list_vms
@@ -16,7 +15,11 @@ from ._get_virt_detail import get_virt_detail
 from ._get_spice_config import get_spice_config
 from ._launch_spice_viewer import launch_spice_viewer
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import my_secrets
 
 
 class Proxmox(object):

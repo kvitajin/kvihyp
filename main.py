@@ -1,9 +1,14 @@
-from proxmox_module import Proxmox
-from xen_module import Xen
+from web.proxmox_module import Proxmox
+from web.xen_module import Xen
+from web.qemu_module import Qemu
 import urllib3
 import xmlrpc.client
 import secrets
 import ssl
+import socket
+import json
+
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -17,11 +22,15 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 # class Xen(object):
+class Qemu(object):
+    def __init__(self):
+        self.qemu_db = {}
+
 
 
 if __name__ == '__main__':
-    print("Proxmox")
-    conn = Proxmox()
+    # print("Proxmox")
+    # conn = Proxmox()
     # print(conn.get_nodes())
     # conn.list_vms(True)
     # print(conn.get_virt_detail())
@@ -51,16 +60,16 @@ if __name__ == '__main__':
     # conn.start_vm(11)
     # conn.get_spice_config(113)
     # conn.launch_spice_viewer(113)
-    conn.get_virt_storage(True)
-    xen = Xen()
+    # conn.get_virt_storage(True)
+    # xen = Xen()
     # xen_module.list_templates()
     # xen.create_vm_whithout_template(name_label="pokus weeee", name_description="tak hodne stesti")
     # xen_module.create_vm_whithout_template(name_label="pokus", name_description="tak hodne stesti")
     # template_ref="0a2d918d-f506-0c6d-5d20-e0893dc6dfc5"
     # xen_module.get_all_vm_info()
     # print(xen_module.get_VMs())
-    print("Xen")
-    # xen.get_vms(True)
+    # print("Xen")
+    # xen.get_vms(print_vms=True)
     # xen.list_vms(True)
     # print(xen.get_templates())
     # xen.create_vm(name="pokus", cores=1, memory=512, vmid=112, disk_size=32)
@@ -75,10 +84,16 @@ if __name__ == '__main__':
     # for key, value in data:
     #     print(f'{key}={value}\n')
     # print(data[0])
-    xen.get_virt_storage(True)
-    xen.create_virt_storage("jmenostorage", '3e83e4a3-767b-f74c-49d6-84a6ca37b045', 1024*1024)
+    # xen.get_virt_storage(True)
+    # xen.create_virt_storage("jmenostorage", '3e83e4a3-767b-f74c-49d6-84a6ca37b045', 1024*1024)
+    qemu = Qemu()
+    qemu.create_virt_storage(vmid='pokus', size=5)
+    # qemu.create_vm(name='pokus', cores=2, memory=2, disk_size=5)
 
 
-    # print(xen.get_vm_info(xen.fuckit()[0]))
-    # print(xen.fuckit())
+
+
+
+        # print(xen.get_vm_info(xen.fuckit()[0]))
+        # print(xen.fuckit())
 

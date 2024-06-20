@@ -45,3 +45,30 @@ class Connection(models.Model):
             data.append(connection)
         return data
 
+class Vm(models.Model):
+    name = models.CharField(max_length=100)
+    cores = models.IntegerField()
+    memory = models.IntegerField()
+    vmid = models.IntegerField()
+    disk_size = models.IntegerField()
+    storage = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    last_update = models.DateTimeField(auto_now=True)
+    last_error = models.CharField(max_length=100, blank=True, null=True)
+    ip = models.CharField(max_length=100, blank=True, null=True)
+    port_spice = models.IntegerField(blank=True, null=True)
+    params = models.CharField(max_length=100, blank=True, null=True)
+    connection = models.ForeignKey(Connection, on_delete=models.CASCADE)
+
+
+
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def everything():
+        data = []
+        for vm in Vm.objects.all():
+            data.append(vm)
+        return data

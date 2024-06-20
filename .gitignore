@@ -287,3 +287,6 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm
+
+web/qemu_module/isos/*
+web/qemu_module/qcows/*

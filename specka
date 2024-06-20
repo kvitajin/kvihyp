@@ -19,3 +19,40 @@ ok    /connections/<int:db_connection_id>/<str:node>/vms vrati seznam vsech vm n
 ok    /connections/<int:db_connection_id>/<str:node>/storages vrati seznam vsech storage na jednom nodu
     /connections/<int:db_connection_id>/<str:node>/vms/<str:vmid> vrati informace o jedne vm
     /connections/<int:db_connection_id>/<str:node>/storages/<str:name> vrati detail jednoho storage
+
+
+qemu požadavky
+
+db ukládající informace o všech pripojených serverech
+
+    vms
+        id                  - v
+        name                - v
+        ip_spice
+        port_spice
+        type
+        status              - v
+        last_update         - v
+        last_error          - v
+        last_error_time
+        last_error_count
+        last_error_reset
+        params
+        FK_connection_id
+        cores               - v
+        memory              - v
+    connections
+        id
+        name
+        ip
+        port
+        user
+        password
+        type
+        status
+        last_update
+        last_error
+        last_error_time
+        last_error_count
+        last_error_reset
+        params
