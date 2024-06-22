@@ -7,6 +7,7 @@ from .forms import StorageForm
 from .forms import VMForm
 from proxmox_module import Proxmox
 from xen_module import Xen
+from qemu_module import Qemu
 import subprocess
 import json
 
@@ -86,6 +87,13 @@ def node_list(request, db_connection_id):
                                                        xen_password=connection.password)
         xen = single_connections[db_connection_id]
         data = xen.get_nodes()
+    elif connection.type == 'Qemu':
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
+        qemu = single_connections[db_connection_id]
+        data = qemu.get_nodes()
+    else:
+        return render(request, 'node_list.html', {'data': []})
     transfer = {"connection_id": connection.id, "type": connection.type, "nodes": data}
     return render(request, 'node_list.html', {'data': transfer})
 
@@ -118,6 +126,16 @@ def list_vms(request, db_connection_id, node_name):
         return render(request, 'list_vms.html',
                       {'vms': data,
                        'hypervisor': 'Xen',
+                       'node': node_name,
+                       'db_connection_id': db_connection_id})
+    elif connection.type == 'Qemu':
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
+        qemu = single_connections[db_connection_id]
+        data = qemu.list_vms(node_name=node_name)
+        return render(request, 'list_vms.html',
+                      {'vms': data,
+                       'hypervisor': 'Qemu',
                        'node': node_name,
                        'db_connection_id': db_connection_id})
 
@@ -214,7 +232,11 @@ def vm_start(request, db_connection_id, node_name, vmid):
 
             print("im here in side start vm")
             print(node_name, vmid)
-
+    elif connection.type == 'Qemu':
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
+            print ("im here in side start vm qemu")
+            print(node_name, vmid)
     conn = single_connections[db_connection_id]
     conn.start_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)

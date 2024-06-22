@@ -30,13 +30,10 @@ class Connection(models.Model):
     http_host = models.CharField(max_length=150, blank=True, null=True)
 
     def __str__(self):
-        # data = []
-        # data.append(str(self.id))
-        # data.append(self.type)
-        # data.append(self.username)
-        # data.append(self.host)
-        # return ' '.join(data)
         return self.type
+
+    def get_host(self):
+        return self.host
 
     @staticmethod
     def everything():

@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 
 def create_virt_storage(self, vmid, size, storage='qcows'):
@@ -7,9 +8,9 @@ def create_virt_storage(self, vmid, size, storage='qcows'):
         'create',
         '-f',
         'qcow2',
-        f'{storage}/{vmid}.qcow2',
+        f'web/qemu_module/{storage}/{vmid}.qcow2',
         f'{size}G'
     ]
     subprocess.run(cmd)
-
-    return f'{storage}/{vmid}.qcow2'
+    print(os.getcwd())
+    return f'web/qemu_module/{storage}/{vmid}.qcow2'

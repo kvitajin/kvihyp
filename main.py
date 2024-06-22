@@ -21,11 +21,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 #  pristup ke konzoli
 
 
-# class Xen(object):
-class Qemu(object):
-    def __init__(self):
-        self.qemu_db = {}
-
 
 
 if __name__ == '__main__':
@@ -87,9 +82,10 @@ if __name__ == '__main__':
     # xen.get_virt_storage(True)
     # xen.create_virt_storage("jmenostorage", '3e83e4a3-767b-f74c-49d6-84a6ca37b045', 1024*1024)
     qemu = Qemu()
-    qemu.create_virt_storage(vmid='pokus', size=5)
-    # qemu.create_vm(name='pokus', cores=2, memory=2, disk_size=5)
-
+    # qemu.create_virt_storage(vmid='pokus', size=5)
+    # tmp=qemu.create_vm(name='pokus', cores=2, memory=2, disk_size=5)
+    # print(tmp)
+    qemu.get_nodes()
 
 
 
