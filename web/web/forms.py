@@ -26,6 +26,6 @@ class VMForm(forms.Form):
     name = forms.CharField(label='Name')
     cores = forms.IntegerField(label='Cores')
     memory = forms.IntegerField(label='Memory')
-    disk_size = forms.CharField(label='Disk size')
+    disk_size = forms.IntegerField(label='Disk size')
 
 

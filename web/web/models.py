@@ -46,7 +46,6 @@ class Vm(models.Model):
     name = models.CharField(max_length=100)
     cores = models.IntegerField()
     memory = models.IntegerField()
-    vmid = models.IntegerField()
     disk_size = models.IntegerField()
     storage = models.CharField(max_length=100)
     status = models.CharField(max_length=100)

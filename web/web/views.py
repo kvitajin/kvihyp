@@ -230,14 +230,15 @@ def vm_start(request, db_connection_id, node_name, vmid):
                                                        xen_username=connection.username,
                                                        xen_password=connection.password)
 
-            print("im here in side start vm")
-            print(node_name, vmid)
+            # print("im here in side start vm")
+            # print(node_name, vmid)
     elif connection.type == 'Qemu':
         if single_connections.get(db_connection_id) is None:
             single_connections[db_connection_id] = Qemu()
-            print ("im here in side start vm qemu")
-            print(node_name, vmid)
+            # print(node_name, vmid)
     conn = single_connections[db_connection_id]
+    # print(f'imi in views {node_name} {type(vmid)}')
+    vmid = int(vmid)
     conn.start_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
 
@@ -255,7 +256,11 @@ def vm_suspend(request, db_connection_id, node_name, vmid):
             single_connections[db_connection_id] = Xen(xen_host=connection.host,
                                                        xen_username=connection.username,
                                                        xen_password=connection.password)
+    elif connection.type == 'Qemu':
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
     conn = single_connections[db_connection_id]
+    vmid = int(vmid)
     conn.suspend_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
 
@@ -273,7 +278,11 @@ def vm_stop(request, db_connection_id, node_name, vmid):
             single_connections[db_connection_id] = Xen(xen_host=connection.host,
                                                        xen_username=connection.username,
                                                        xen_password=connection.password)
+    elif connection.type == "Qemu":
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
     conn = single_connections[db_connection_id]
+    vmid = int(vmid)
     conn.stop_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
 
@@ -312,6 +321,11 @@ def create_vm(request, db_connection_id, node_name):
                     single_connections[db_connection_id] = Xen(xen_host=connection.host,
                                                                xen_username=connection.username,
                                                                xen_password=connection.password)
+            elif connection.type == "Qemu":
+                if single_connections.get(db_connection_id) is None:
+                    single_connections[db_connection_id] = Qemu()
+
+
             conn = single_connections[db_connection_id]
             conn.create_vm(node_name=node_name,
                            name=form.cleaned_data['name'],

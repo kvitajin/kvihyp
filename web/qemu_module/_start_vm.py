@@ -16,8 +16,12 @@ def start_vm(self, vmid, node_name=None):
     # print(f'VM: {vm}')
     # self.cursor.execute("SELECT * FROM Vm WHERE id=?", (vmid))
     # vm = self.cursor.fetchone()
+
     if vm is None:
         print(f'VM {vmid} does not exist.')
+        return
+    if vm.status == 'running' and vmid-1 in self.running_vms:
+        print(f'VM {vmid} is already running.')
         return
     cmd = [
         'qemu-system-x86_64',
@@ -34,8 +38,7 @@ def start_vm(self, vmid, node_name=None):
         '-device', 'virtserialport,chardev=spicechannel0,name=com.redhat.spice.0',
         '-chardev', 'spicevmc,id=spicechannel0,name=vdagent',
     ]
-    runstatus = subprocess.run(cmd)
-    print(runstatus.returncode)
+    self.running_vms[int(vmid)-1] = subprocess.Popen(cmd)
     vm.status = 'running'
     vm.last_update = datetime.now()
     vm.save()
