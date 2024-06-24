@@ -5,8 +5,7 @@ import django
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from web.models import Vm
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
-django.setup()
+
 
 
 def start_vm(self, vmid, node_name=None):

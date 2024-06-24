@@ -8,6 +8,18 @@ from ._start_vm import start_vm
 from ._suspend_vm import suspend_vm
 from ._stop_vm import stop_vm
 from ._delete_vm import delete_vm
+from ._get_virt_storage import get_virt_storage
+from ._open_console import open_console
+import django
+from django.conf import settings
+
+
+settings.configure(default_settings=settings, DEBUG=True)
+django.setup()
+
+# Now this script or any imported module can use any part of Django it needs.
+from web.web.models import Vm
+
 
 import sys
 import os
@@ -27,18 +39,19 @@ class Qemu(object):
         Qemu.suspend_vm = suspend_vm
         Qemu.stop_vm = stop_vm
         Qemu.delete_vm = delete_vm
-        self.running_vms = []
-        for i in range(100):
-            self.running_vms.append(None)
+        Qemu.get_virt_storage = get_virt_storage
+        Qemu.open_console = open_console
+
+        self.running_vms = {}
+        # for i in range(100):
+        #     self.running_vms.append(None)
         self.conn = sqlite3.connect('web/db.sqlite3')
         self.cursor = self.conn.cursor()
 
 
-        # Proxmox.get_virt_storage = get_virt_storage
         # Proxmox.open_console = open_console
         # Proxmox.get_virt_detail = get_virt_detail
-        # Proxmox.get_spice_config = get_spice_config
-        # Proxmox.launch_spice_viewer = launch_spice_viewer
+
 
 
 

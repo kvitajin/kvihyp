@@ -1,6 +1,7 @@
-from web.proxmox_module import Proxmox
-from web.xen_module import Xen
-from web.qemu_module import Qemu
+from proxmox_module import Proxmox
+from web import settings
+from xen_module import Xen
+from qemu_module import Qemu
 import urllib3
 import xmlrpc.client
 import secrets
@@ -81,11 +82,13 @@ if __name__ == '__main__':
     # print(data[0])
     # xen.get_virt_storage(True)
     # xen.create_virt_storage("jmenostorage", '3e83e4a3-767b-f74c-49d6-84a6ca37b045', 1024*1024)
+    settings.configure()
     qemu = Qemu()
     # qemu.create_virt_storage(vmid=1, size=5)
     # tmp=qemu.create_vm(name='pokus', cores=2, memory=2, disk_size=5)
     # print(tmp)
     qemu.get_nodes()
+    qemu.open_console(1)
 
 
 

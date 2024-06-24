@@ -29,6 +29,8 @@ def get_virt_storage(self, print_storage=False, node_names=None):
                   )
         else:
             storages.append({'storage': storage["name_label"],
+                             'used_fraction': "{:.2f}".format(used_perc),
+                             'shared': storage['shared'],
                              'total': round(float(storage_max / 1024 / 1024 / 1024), 2),
                              'avail': round(float(storage_free / 1024 / 1024 / 1024), 2),
                              'used': round(float(storage_used / 1024 / 1024 / 1024), 2),

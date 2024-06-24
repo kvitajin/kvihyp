@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'proxmox_module',
+    'qemu_module',
+    'xen_module',
 ]
 
 MIDDLEWARE = [

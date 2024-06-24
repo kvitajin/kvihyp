@@ -5,8 +5,6 @@ import django
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from web.models import Vm
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
-django.setup()
 
 def stop_vm(self, vmid, node_name=None):
     vm = Vm.objects.get(id=vmid)
@@ -17,7 +15,8 @@ def stop_vm(self, vmid, node_name=None):
         print(f'VM {vmid} is already stopped.')
         return
     if vm.status == 'running':
-        self.running_vms[vmid-1].terminate()
+        value = self.running_vms.get(vmid-1)
+        value.terminate()
     vm.status = 'stopped'
     vm.last_update = datetime.now()
     vm.save()

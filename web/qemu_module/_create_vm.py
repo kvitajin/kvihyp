@@ -1,8 +1,12 @@
 import subprocess
-import os
+import os, sys
+import django
 from datetime import datetime
-from web.models import Vm
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from models import Vm
 # TODO jeste asi nefunguje idealne, ale do db zapsalo, tak to asi muselo probehnout spravne
+
+
 def create_vm(self, name, cores, memory, disk_size, storage=None, node_name=None):
     if cores < 1:
         return "Error: cores must be at least 1"

@@ -125,7 +125,7 @@ def list_vms(request, db_connection_id, node_name):
         data = xen.get_vms(node_name=node_name)
         return render(request, 'list_vms.html',
                       {'vms': data,
-                       'hypervisor': 'Xen',
+                           'hypervisor': 'Xen',
                        'node': node_name,
                        'db_connection_id': db_connection_id})
     elif connection.type == 'Qemu':
@@ -154,14 +154,18 @@ def list_storages(request, db_connection_id, node_name):
             single_connections[db_connection_id] = Xen(xen_host=connection.host,
                                                        xen_username=connection.username,
                                                        xen_password=connection.password)
+    elif connection.type == "Qemu":
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
 
     conn = single_connections[db_connection_id]
+    print(f'imi in views  list storages {node_name}')
     data = conn.get_virt_storage(node_names=node_names)
     return render(request, 'list_storages.html',
-                      {'storages': data,
-                       'hypervisor': 'Proxmox',
-                       'node': node_name,
-                       'db_connection_id': db_connection_id})
+                  {'storages': data,
+                   'hypervisor': connection.type,
+                   'node': node_name,
+                   'db_connection_id': db_connection_id})
 
 
 def storage_detail(request, db_connection_id, node_name, storage_name):
@@ -210,7 +214,7 @@ def storage_create(request, db_connection_id, node_name):
                                                 vmid=form.cleaned_data['vmid'],
                                                 size=form.cleaned_data['size'])
         return render(request, 'storage_create.html',
-                              {'form': form})
+                      {'form': form})
     else:
         form = StorageForm()
     return render(request, 'storage_create.html', {'form': form})
@@ -298,8 +302,8 @@ def vm_delete(request, db_connection_id, node_name, vmid):
     elif connection.type == "Xen":
         if single_connections.get(db_connection_id) is None:
             single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                           xen_username=connection.username,
-                                                           xen_password=connection.password)
+                                                       xen_username=connection.username,
+                                                       xen_password=connection.password)
     conn = single_connections[db_connection_id]
     conn.delete_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
@@ -324,7 +328,6 @@ def create_vm(request, db_connection_id, node_name):
             elif connection.type == "Qemu":
                 if single_connections.get(db_connection_id) is None:
                     single_connections[db_connection_id] = Qemu()
-
 
             conn = single_connections[db_connection_id]
             conn.create_vm(node_name=node_name,
