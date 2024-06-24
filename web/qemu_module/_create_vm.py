@@ -2,8 +2,8 @@ import subprocess
 import os, sys
 import django
 from datetime import datetime
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from models import Vm
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from web.models import Vm
 # TODO jeste asi nefunguje idealne, ale do db zapsalo, tak to asi muselo probehnout spravne
 
 

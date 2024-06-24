@@ -10,20 +10,16 @@ from ._stop_vm import stop_vm
 from ._delete_vm import delete_vm
 from ._get_virt_storage import get_virt_storage
 from ._open_console import open_console
-import django
-from django.conf import settings
-
-
-settings.configure(default_settings=settings, DEBUG=True)
-django.setup()
 
 # Now this script or any imported module can use any part of Django it needs.
-from web.web.models import Vm
 
 
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+project_root = sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+from web.web.models import Vm
 import my_secrets
 
 
@@ -52,12 +48,6 @@ class Qemu(object):
         # Proxmox.open_console = open_console
         # Proxmox.get_virt_detail = get_virt_detail
 
-
-
-
-
-
         self.conn = sqlite3.connect('web/db.sqlite3')
         self.cursor = self.conn.cursor()
-
 

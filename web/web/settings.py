@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import os
+import django
+from django.conf import settings
 
 from pathlib import Path
 
@@ -76,6 +79,8 @@ WSGI_APPLICATION = 'web.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+settings.configure( BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+ DEBUG=True)
 
 DATABASES = {
     'default': {
@@ -125,3 +130,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django.setup()

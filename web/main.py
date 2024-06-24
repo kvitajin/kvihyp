@@ -82,7 +82,6 @@ if __name__ == '__main__':
     # print(data[0])
     # xen.get_virt_storage(True)
     # xen.create_virt_storage("jmenostorage", '3e83e4a3-767b-f74c-49d6-84a6ca37b045', 1024*1024)
-    settings.configure()
     qemu = Qemu()
     # qemu.create_virt_storage(vmid=1, size=5)
     # tmp=qemu.create_vm(name='pokus', cores=2, memory=2, disk_size=5)
