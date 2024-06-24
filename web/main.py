@@ -1,13 +1,11 @@
-from proxmox_module import Proxmox
-from web import settings
-from xen_module import Xen
-from qemu_module import Qemu
+
 import urllib3
 import xmlrpc.client
 import secrets
 import ssl
 import socket
 import json
+
 
 
 
@@ -25,6 +23,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 if __name__ == '__main__':
+    import django
+    from proxmox_module import Proxmox
+    from web import settings
+    from xen_module import Xen
+    from qemu_module import Qemu
+    django.setup()
     # print("Proxmox")
     # conn = Proxmox()
     # print(conn.get_nodes())

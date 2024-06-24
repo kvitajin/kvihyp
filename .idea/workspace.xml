@@ -9,13 +9,7 @@
       <change beforePath="$PROJECT_DIR$/web/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/qemu_module/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/qemu_module/_create_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_create_vm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/qemu_module/_delete_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_delete_vm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/qemu_module/_get_nodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_get_nodes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/qemu_module/_get_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_get_virt_storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/qemu_module/_list_vms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_list_vms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/qemu_module/_open_console.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_open_console.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/qemu_module/_start_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_start_vm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/qemu_module/_stop_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_stop_vm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/qemu_module/_suspend_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_suspend_vm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/settings.py" afterDir="false" />
     </list>
@@ -170,7 +164,8 @@
       <workItem from="1718874456537" duration="58539000" />
       <workItem from="1719142096075" duration="22906000" />
       <workItem from="1719227529018" duration="4536000" />
-      <workItem from="1719235456709" duration="21738000" />
+      <workItem from="1719235456709" duration="22798000" />
+      <workItem from="1719266361611" duration="1747000" />
     </task>
     <servers />
   </component>
@@ -178,6 +173,6 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/kvihyp$main.coverage" NAME="main Coverage Results" MODIFIED="1719264933962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/kvihyp$main.coverage" NAME="main Coverage Results" MODIFIED="1719270366506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
