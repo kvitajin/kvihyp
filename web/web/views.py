@@ -21,6 +21,22 @@ def wifi_check():
         print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA SPATNA WIFI')
 
 
+def get_or_create_connection(connection):
+    if single_connections.get(connection.id) is None:
+        if connection.type == 'Proxmox':
+            single_connections[connection.id] = Proxmox(http_host=connection.http_host,
+                                                         password=connection.password,
+                                                         username=connection.username,
+                                                         ip_host=connection.host)
+        elif connection.type == 'Xen':
+            single_connections[connection.id] = Xen(xen_host=connection.host,
+                                                    xen_username=connection.username,
+                                                    xen_password=connection.password)
+        elif connection.type == 'Qemu':
+            single_connections[connection.id] = Qemu()
+    return single_connections[connection.id]
+
+
 def hypervisor_list(request):
     hypervisors = Web.objects.all()
     return render(request, 'hypervisor_list.html', {'hypervisors': hypervisors})
@@ -74,26 +90,8 @@ def connections(request):
 def node_list(request, db_connection_id):
     connection = get_object_or_404(Connection, id=db_connection_id)
     if connection.type == 'Proxmox':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                           password=connection.password,
-                                                           username=connection.username,
-                                                           ip_host=connection.host)
-        proxmox = single_connections[db_connection_id]
-        data = proxmox.get_nodes()
-
-    elif connection.type == 'Xen':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                       xen_username=connection.username,
-                                                       xen_password=connection.password)
-        xen = single_connections[db_connection_id]
-        data = xen.get_nodes()
-    elif connection.type == 'Qemu':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Qemu()
-        qemu = single_connections[db_connection_id]
-        data = qemu.get_nodes()
+        conn = get_or_create_connection(connection)
+        data = conn.get_nodes()
     else:
         return render(request, 'node_list.html', {'data': []})
     transfer = {"connection_id": connection.id, "type": connection.type, "nodes": data}
@@ -145,22 +143,7 @@ def list_vms(request, db_connection_id, node_name):
 def list_storages(request, db_connection_id, node_name):
     connection = get_object_or_404(Connection, id=db_connection_id)
     node_names = [node_name]
-    if connection.type == 'Proxmox':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                           password=connection.password,
-                                                           username=connection.username,
-                                                           ip_host=connection.host)
-    elif connection.type == "Xen":
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                       xen_username=connection.username,
-                                                       xen_password=connection.password)
-    elif connection.type == "Qemu":
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Qemu()
-
-    conn = single_connections[db_connection_id]
+    conn = get_or_create_connection(connection)
     print(f'imi in views  list storages {node_name}')
     data = conn.get_virt_storage(node_names=node_names)
     return render(request, 'list_storages.html',
@@ -195,23 +178,18 @@ def storage_create(request, db_connection_id, node_name):
     if request.method == 'POST':
         form = StorageForm(request.POST)
         if form.is_valid():
+            conn = get_or_create_connection(connection)
             if connection.type == 'Proxmox':
-                if single_connections.get(db_connection_id) is None:
-                    single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                                   password=connection.password,
-                                                                   username=connection.username,
-                                                                   ip_host=connection.host)
-                proxmox = single_connections[db_connection_id]
-                data = proxmox.create_virt_storage(node_name=node_name,
+                data = conn.create_virt_storage(node_name=node_name,
                                                    storage='local-hdd',
                                                    vmid=form.cleaned_data['vmid'],
                                                    size=form.cleaned_data['size'])
             elif connection.type == "Xen":
-                if single_connections.get(db_connection_id) is None:
-                    single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                               xen_username=connection.username,
-                                                               xen_password=connection.password)
-                conn = single_connections[db_connection_id]
+
+                data = conn.create_virt_storage(storage='Local storage',
+                                                vmid=form.cleaned_data['vmid'],
+                                                size=form.cleaned_data['size'])
+            elif connection.type == "Qemu":
                 data = conn.create_virt_storage(storage='Local storage',
                                                 vmid=form.cleaned_data['vmid'],
                                                 size=form.cleaned_data['size'])
@@ -224,26 +202,7 @@ def storage_create(request, db_connection_id, node_name):
 
 def vm_start(request, db_connection_id, node_name, vmid):
     connection = get_object_or_404(Connection, id=db_connection_id)
-    if connection.type == 'Proxmox':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                           password=connection.password,
-                                                           username=connection.username,
-                                                           ip_host=connection.host)
-    elif connection.type == 'Xen':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                       xen_username=connection.username,
-                                                       xen_password=connection.password)
-
-            # print("im here in side start vm")
-            # print(node_name, vmid)
-    elif connection.type == 'Qemu':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Qemu()
-            # print(node_name, vmid)
-    conn = single_connections[db_connection_id]
-    # print(f'imi in views {node_name} {type(vmid)}')
+    conn = get_or_create_connection(connection)
     vmid = int(vmid)
     conn.start_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
@@ -251,21 +210,7 @@ def vm_start(request, db_connection_id, node_name, vmid):
 
 def vm_suspend(request, db_connection_id, node_name, vmid):
     connection = get_object_or_404(Connection, id=db_connection_id)
-    if connection.type == 'Proxmox':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                           password=connection.password,
-                                                           username=connection.username,
-                                                           ip_host=connection.host)
-    elif connection.type == 'Xen':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                       xen_username=connection.username,
-                                                       xen_password=connection.password)
-    elif connection.type == 'Qemu':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Qemu()
-    conn = single_connections[db_connection_id]
+    conn = get_or_create_connection(connection)
     vmid = int(vmid)
     conn.suspend_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
@@ -273,21 +218,7 @@ def vm_suspend(request, db_connection_id, node_name, vmid):
 
 def vm_stop(request, db_connection_id, node_name, vmid):
     connection = get_object_or_404(Connection, id=db_connection_id)
-    if connection.type == 'Proxmox':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                           password=connection.password,
-                                                           username=connection.username,
-                                                           ip_host=connection.host)
-    elif connection.type == "Xen":
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                       xen_username=connection.username,
-                                                       xen_password=connection.password)
-    elif connection.type == "Qemu":
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Qemu()
-    conn = single_connections[db_connection_id]
+    conn = get_or_create_connection(connection)
     vmid = int(vmid)
     conn.stop_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
@@ -295,18 +226,7 @@ def vm_stop(request, db_connection_id, node_name, vmid):
 
 def vm_delete(request, db_connection_id, node_name, vmid):
     connection = get_object_or_404(Connection, id=db_connection_id)
-    if connection.type == 'Proxmox':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                           password=connection.password,
-                                                           username=connection.username,
-                                                           ip_host=connection.host)
-    elif connection.type == "Xen":
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                       xen_username=connection.username,
-                                                       xen_password=connection.password)
-    conn = single_connections[db_connection_id]
+    conn = get_or_create_connection(connection)
     conn.delete_vm(node_name=node_name, vmid=vmid)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
 
@@ -316,22 +236,7 @@ def create_vm(request, db_connection_id, node_name):
     if request.method == 'POST':
         form = VMForm(request.POST)
         if form.is_valid():
-            if connection.type == 'Proxmox':
-                if single_connections.get(db_connection_id) is None:
-                    single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                                   password=connection.password,
-                                                                   username=connection.username,
-                                                                   ip_host=connection.host)
-            elif connection.type == "Xen":
-                if single_connections.get(db_connection_id) is None:
-                    single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                               xen_username=connection.username,
-                                                               xen_password=connection.password)
-            elif connection.type == "Qemu":
-                if single_connections.get(db_connection_id) is None:
-                    single_connections[db_connection_id] = Qemu()
-
-            conn = single_connections[db_connection_id]
+            conn = get_or_create_connection(connection)
             conn.create_vm(node_name=node_name,
                            name=form.cleaned_data['name'],
                            cores=form.cleaned_data['cores'],
@@ -345,21 +250,7 @@ def create_vm(request, db_connection_id, node_name):
 
 def create_snapshot(request, db_connection_id, node_name, vmid):
     connection = get_object_or_404(Connection, id=db_connection_id)
-    if connection.type == 'Proxmox':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
-                                                           password=connection.password,
-                                                           username=connection.username,
-                                                           ip_host=connection.host)
-    elif connection.type == 'Xen':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Xen(xen_host=connection.host,
-                                                       xen_username=connection.username,
-                                                       xen_password=connection.password)
-    elif connection.type == 'Qemu':
-        if single_connections.get(db_connection_id) is None:
-            single_connections[db_connection_id] = Qemu()
-    conn = single_connections[db_connection_id]
+    conn = get_or_create_connection(connection)
     conn.create_snapshot(vmid=vmid, node_name=node_name)
     return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
 
