@@ -23,8 +23,8 @@ def get_virt_storage(self, print_storage=False, node_names=None):
                          'avail': round(float(storage_free / 1024 / 1024 / 1024), 2),
                          'used': round(float(storage_used / 1024 / 1024 / 1024), 2),
                          'enabled': True,
-                         'type': 'qcow2'
-
+                         'type': 'qcow2',
+                         'vmid': i.id,
                          })
 
 

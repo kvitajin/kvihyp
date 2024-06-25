@@ -5,9 +5,11 @@ from .forms import HypervisorForm
 from .forms import ConnectionForm
 from .forms import StorageForm
 from .forms import VMForm
+from .forms import EditVMForm
 from proxmox_module import Proxmox
 from xen_module import Xen
 from qemu_module import Qemu
+from .models import Vm
 import subprocess
 import json
 
@@ -339,3 +341,89 @@ def create_vm(request, db_connection_id, node_name):
     else:
         form = VMForm()
     return render(request, 'create_vm.html', {'form': form})
+
+
+def create_snapshot(request, db_connection_id, node_name, vmid):
+    connection = get_object_or_404(Connection, id=db_connection_id)
+    if connection.type == 'Proxmox':
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
+                                                           password=connection.password,
+                                                           username=connection.username,
+                                                           ip_host=connection.host)
+    elif connection.type == 'Xen':
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Xen(xen_host=connection.host,
+                                                       xen_username=connection.username,
+                                                       xen_password=connection.password)
+    elif connection.type == 'Qemu':
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
+    conn = single_connections[db_connection_id]
+    conn.create_snapshot(vmid=vmid, node_name=node_name)
+    return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
+
+
+def edit_vm(request, db_connection_id, node_name, vmid):
+    connection = get_object_or_404(Connection, id=db_connection_id)
+    if connection.type == "Qemu":
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Qemu()
+        vm = Vm.objects.get(id=vmid)
+
+        conn = single_connections[db_connection_id]
+        if request.method == 'POST':
+            form = EditVMForm(request.POST, initial={'cores': vm.cores, 'memory': vm.memory, 'disk_size': vm.disk_size})
+            if form.is_valid():
+
+                conn.edit_vm(vmid=vmid,
+                             node_name=node_name,
+                             cores=form.cleaned_data['cores'],
+                             memory=form.cleaned_data['memory'],
+                             disk_size=form.cleaned_data['disk_size'])
+                return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
+        else:
+            form = EditVMForm(initial={'cores': vm.cores, 'memory': vm.memory, 'disk_size': vm.disk_size})
+    elif connection.type == "Proxmox":
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Proxmox(http_host=connection.http_host,
+                                                           password=connection.password,
+                                                           username=connection.username,
+                                                           ip_host=connection.host)
+        conn = single_connections[db_connection_id]
+        vms = conn.list_vms(node_names=[node_name])
+        vm = next((vm for vm in vms if vm.get('vmid') == int(vmid)), None)
+        # print(f'EDIIIIIIT {vm}, vmid: {vmid}')
+        if request.method == 'POST':
+            form = EditVMForm(request.POST, initial={'cores': int(vm['cpus']), 'memory': float(vm['maxmem']), 'disk_size': float(vm['disk_size'])})
+            if form.is_valid():
+                conn.edit_vm(vmid=vmid,
+                             node_name=node_name,
+                             cores=form.cleaned_data['cores'],
+                             memory=form.cleaned_data['memory'],
+                             disk_size=form.cleaned_data['disk_size'])
+                return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
+        else:
+            form = EditVMForm(initial={'cores': int(vm['cpus']), 'memory': float(vm['maxmem']), 'disk_size': float(vm['disk_size'])})
+    elif connection.type == "Xen":
+        if single_connections.get(db_connection_id) is None:
+            single_connections[db_connection_id] = Xen(xen_host=connection.host,
+                                                       xen_username=connection.username,
+                                                       xen_password=connection.password)
+        conn = single_connections[db_connection_id]
+        vms = conn.get_vms()
+        vm = next((vm for vm in vms if vm.get('vmid') == str(vmid)), None)
+        print(vm)
+        if request.method == 'POST':
+            form = EditVMForm(request.POST, initial={'cores': int(vm['cpus']), 'memory': float(vm['maxmem']), 'disk_size': float(0.0)})
+            if form.is_valid():
+                conn.edit_vm(vmid=vmid,
+                             node_name=node_name,
+                             cores=form.cleaned_data['cores'],
+                             memory=form.cleaned_data['memory'],
+                             disk_size=form.cleaned_data['disk_size'])
+                return redirect('list_vms', db_connection_id=db_connection_id, node_name=node_name)
+        else:
+            form = EditVMForm(initial={'cores': int(vm['cpus']), 'memory': float(vm['maxmem']), 'disk_size': float(0.0)})
+
+    return render(request, 'edit_vm.html', {'form': form})

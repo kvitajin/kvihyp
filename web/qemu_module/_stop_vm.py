@@ -16,6 +16,9 @@ def stop_vm(self, vmid, node_name=None):
         return
     if vm.status == 'running':
         value = self.running_vms.get(vmid-1)
+        if value is None:
+            print(f'VM {vmid} is not running.')
+            return
         value.terminate()
     vm.status = 'stopped'
     vm.last_update = datetime.now()

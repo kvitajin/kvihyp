@@ -46,8 +46,8 @@ class Connection(models.Model):
 class Vm(models.Model):
     name = models.CharField(max_length=100)
     cores = models.IntegerField()
-    memory = models.IntegerField()
-    disk_size = models.IntegerField()
+    memory = models.FloatField()
+    disk_size = models.FloatField()
     storage = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
     last_update = models.DateTimeField(auto_now=True)

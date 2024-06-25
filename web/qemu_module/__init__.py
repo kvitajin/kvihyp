@@ -10,6 +10,8 @@ from ._stop_vm import stop_vm
 from ._delete_vm import delete_vm
 from ._get_virt_storage import get_virt_storage
 from ._open_console import open_console
+from ._create_snapshot import create_snapshot
+from ._edit_vm import edit_vm
 
 # Now this script or any imported module can use any part of Django it needs.
 
@@ -37,6 +39,8 @@ class Qemu(object):
         Qemu.delete_vm = delete_vm
         Qemu.get_virt_storage = get_virt_storage
         Qemu.open_console = open_console
+        Qemu.create_snapshot = create_snapshot
+        Qemu.edit_vm = edit_vm
 
         self.running_vms = {}
         # for i in range(100):
@@ -45,7 +49,6 @@ class Qemu(object):
         self.cursor = self.conn.cursor()
 
 
-        # Proxmox.open_console = open_console
         # Proxmox.get_virt_detail = get_virt_detail
 
         self.conn = sqlite3.connect('web/db.sqlite3')

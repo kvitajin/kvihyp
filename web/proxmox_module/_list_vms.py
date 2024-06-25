@@ -29,5 +29,6 @@ def list_vms(self, print_vms=False, node_names=None):
                                  'vmid': vm['vmid'],
                                  'maxmem': str(vm["maxmem"] / 1024 / 1024 / 1024),
                                  'mem_usage': str("{:.3f}".format(vm["mem"] / 1024 / 1024 / 1024)),
-                                 'uptime': str(datetime.timedelta(seconds=vm["uptime"]))})
+                                 'uptime': str(datetime.timedelta(seconds=vm["uptime"])),
+                                 'disk_size': str(vm["maxdisk"] / 1024 / 1024 / 1024)})
             return formdata

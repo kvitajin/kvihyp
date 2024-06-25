@@ -13,6 +13,8 @@ from ._suspend_vm import suspend_vm
 from ._open_console import open_console
 from ._get_virt_storage import get_virt_storage
 from ._create_virt_storage import create_virt_storage
+from ._create_snapshot import create_snapshot
+from ._edit_vm import edit_vm
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -51,6 +53,8 @@ class Xen(object):
         Xen.open_console = open_console
         Xen.get_virt_storage = get_virt_storage
         Xen.create_virt_storage = create_virt_storage
+        Xen.create_snapshot = create_snapshot
+        Xen.edit_vm = edit_vm
 
         print("vytvarim xen")
         self.server = xmlrpc.client.ServerProxy(self.XEN_HOST, context=ssl._create_unverified_context())

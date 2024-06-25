@@ -29,3 +29,9 @@ class VMForm(forms.Form):
     disk_size = forms.IntegerField(label='Disk size')
 
 
+class EditVMForm(forms.Form):
+    cores = forms.IntegerField(label='Cores')
+    memory = forms.FloatField(label='Memory')
+    disk_size = forms.FloatField(label='Disk size')
+
+

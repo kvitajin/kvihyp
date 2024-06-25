@@ -32,10 +32,12 @@ urlpatterns = [
     path('connections/<int:db_connection_id>/<str:node_name>/storages', views.list_storages, name='list_storages'),
     path('connections/<int:db_connection_id>/<str:node_name>/storages/create', views.storage_create, name='storage_create'),
     path('connections/<int:db_connection_id>/<str:node_name>/storages/<str:storage_name>', views.storage_detail, name='storage_detail'),
+    path('connections/<int:db_connection_id>/<str:node_name>/vms/<str:vmid>/snapshot', views.create_snapshot, name='create_snapshot'),
     path('connections/<int:db_connection_id>/<str:node_name>/vms/<str:vmid>/start', views.vm_start, name='vm_start'),
     path('connections/<int:db_connection_id>/<str:node_name>/vms/<str:vmid>/suspend', views.vm_suspend, name='vm_suspend'),
     path('connections/<int:db_connection_id>/<str:node_name>/vms/<str:vmid>/stop', views.vm_stop, name='vm_stop'),
     path('connections/<int:db_connection_id>/<str:node_name>/vms/<str:vmid>/delete', views.vm_delete, name='vm_delete'),
     path('connections/<int:db_connection_id>/<str:node_name>/vms/create', views.create_vm, name='create_vm'),
-
+    path('connections/<int:db_connection_id>/<str:node_name>/vms/<str:vmid>/start', views.vm_start, name='vm_start'),
+    path('connections/<int:db_connection_id>/<str:node_name>/vms/<str:vmid>/edit', views.edit_vm, name='edit_vm'),
 ]

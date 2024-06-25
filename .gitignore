@@ -290,3 +290,4 @@ pyrightconfig.json
 
 web/qemu_module/isos/*
 web/qemu_module/qcows/*
+web/qemu_module/snapshots/*

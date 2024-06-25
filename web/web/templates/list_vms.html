@@ -35,7 +35,12 @@
                 <button type="button" onclick="window.location.href='{% url 'vm_delete' db_connection_id=db_connection_id node_name=node vmid=item.vmid %}'">
                     Delete VM
                 </button>
-
+                <button type="button" onclick="window.location.href='{% url 'create_snapshot' db_connection_id=db_connection_id node_name=node vmid=item.vmid %}'">
+                    Create snapshot
+                </button>
+                <button type="button" onclick="window.location.href='{% url 'edit_vm' db_connection_id=db_connection_id node_name=node vmid=item.vmid %}'">
+                    Edit VM
+                </button>
 
 
 

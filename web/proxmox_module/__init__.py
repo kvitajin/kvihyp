@@ -14,7 +14,11 @@ from ._get_virt_detail import get_virt_detail
 # from proxmox_module._get_nodes import get_nodes
 from ._get_spice_config import get_spice_config
 from ._launch_spice_viewer import launch_spice_viewer
+from ._create_snapshot import create_snapshot
+from ._edit_vm import edit_vm
+
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -60,6 +64,8 @@ class Proxmox(object):
         Proxmox.get_virt_detail = get_virt_detail
         Proxmox.get_spice_config = get_spice_config
         Proxmox.launch_spice_viewer = launch_spice_viewer
+        Proxmox.create_snapshot = create_snapshot
+        Proxmox.edit_vm = edit_vm
 
         auth_url = f'{self.PROXMOX_HTTP_HOST}/access/ticket'
         auth_data = {'username': self.PROXMOX_USERNAME_AT, 'password': self.PROXMOX_PASSWORD}
