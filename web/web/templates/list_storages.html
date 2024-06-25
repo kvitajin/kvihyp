@@ -6,6 +6,12 @@
 </head>
 <body>
     <h1>{{hypervisor}} virtual storages list at {{node}}</h1>
+    <button type="button" onclick="window.location.href='{% url 'storage_create' db_connection_id=db_connection_id node_name=node %}'">
+        Create storage
+    </button>
+    <button type="button" onclick="window.location.href='{% url 'list_vms' db_connection_id=db_connection_id node_name=node %}'">
+        List VMs
+    </button>
     <ul>
         {% for item in storages %}
         <li>

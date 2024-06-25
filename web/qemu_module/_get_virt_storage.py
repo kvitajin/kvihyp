@@ -8,10 +8,29 @@ from web.models import Vm
 
 
 def get_virt_storage(self, print_storage=False, node_names=None):
-    # pokus = Vm.objects.all()
+    """
+    Retrieves virtual storage information for VMs on a specified node.
+
+    This function filters VM instances by the first node name provided in the `node_names` list. For each VM, it calculates
+    the used and available storage space, then compiles and returns a list of dictionaries with detailed storage information
+    for each VM. The information includes the VM's name, used and available storage space, total disk size, and other relevant
+    details.
+
+    Args:
+        print_storage (bool, optional): If True, prints the storage information. Defaults to False.
+        node_names (list, optional): A list of node names to filter the VMs by. Currently, only the first node name is used.
+
+    Returns:
+        list: A list of dictionaries, each containing storage information for a VM. Includes the VM's name, used and available
+              storage space, total disk size, and other details.
+
+    Note:
+        - The storage space is calculated based on the VM's disk size attribute and the actual file size on disk.
+        - The function assumes that the `storage` attribute of a VM instance contains the path to its disk image file.
+        - The `enabled`, `type`, and `vmid` fields in the returned dictionaries are hardcoded for demonstration purposes.
+    """
     tmp = Vm.objects.filter(connection__host=node_names[0])
     formdata = []
-    print(f'tmp: {tmp}')
 
     for i in tmp:
         storage_used = os.path.getsize(i.storage)
@@ -26,10 +45,4 @@ def get_virt_storage(self, print_storage=False, node_names=None):
                          'type': 'qcow2',
                          'vmid': i.id,
                          })
-
-
-            # {'name': i.name,
-            #              'storage': i.storage,
-            #              'vmid': i.id})
-    print(formdata)
     return formdata

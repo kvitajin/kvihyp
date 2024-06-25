@@ -5,29 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0664d923-86a1-4ff5-96d3-7739d7c59f3e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/web/proxmox_module/_create_snapshot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/proxmox_module/_edit_vm.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/qemu_module/_create_snapshot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/qemu_module/_edit_vm.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/web/templates/edit_vm.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/xen_module/_create_snapshot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/xen_module/_edit_vm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/proxmox_module/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_create_snapshot.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_create_snapshot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_create_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_create_virt_storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_create_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_create_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_delete_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_delete_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_edit_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_edit_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_get_max_vmid.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_get_max_vmid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_get_nodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_get_nodes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_get_spice_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_get_spice_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_get_virt_detail.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_get_virt_detail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_get_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_get_virt_storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_launch_spice_viewer.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_launch_spice_viewer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/proxmox_module/_list_vms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_list_vms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_open_console.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_open_console.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_start_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_start_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_stop_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_stop_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proxmox_module/_suspend_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/proxmox_module/_suspend_vm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/qemu_module/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_create_snapshot.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_create_snapshot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_create_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_create_virt_storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_create_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_create_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_delete_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_delete_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_edit_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_edit_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_get_nodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_get_nodes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/qemu_module/_get_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_get_virt_storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_list_vms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_list_vms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_open_console.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_open_console.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_start_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_start_vm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/qemu_module/_stop_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_stop_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/qemu_module/_suspend_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/qemu_module/_suspend_vm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/templates/list_storages.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/templates/list_storages.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/templates/list_vms.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/templates/list_vms.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/web/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/web/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/xen_module/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_create_snapshot.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_create_snapshot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_create_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_create_virt_storage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/xen_module/_create_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_create_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_delete_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_delete_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_edit_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_edit_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_get_nodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_get_nodes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_get_template.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_get_template.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_get_virt_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_get_virt_storage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/xen_module/_get_vms.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_get_vms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_open_console.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_open_console.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_smazat.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_start_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_start_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_stop_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_stop_vm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/xen_module/_suspend_vm.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/xen_module/_suspend_vm.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +209,7 @@
       <workItem from="1719142096075" duration="22906000" />
       <workItem from="1719227529018" duration="4536000" />
       <workItem from="1719235456709" duration="22798000" />
-      <workItem from="1719266361611" duration="32700000" />
+      <workItem from="1719266361611" duration="40203000" />
     </task>
     <servers />
   </component>

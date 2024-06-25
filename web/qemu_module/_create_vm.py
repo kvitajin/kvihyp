@@ -8,6 +8,30 @@ from web.models import Vm
 
 
 def create_vm(self, name, cores, memory, disk_size, storage=None, node_name=None):
+    """
+    Creates a new virtual machine (VM) with specified configurations.
+
+    This function initializes a VM with given hardware specifications and a Debian ISO as the installation media.
+    It checks if the specified disk image exists, and if not, it creates a new virtual storage disk. The VM is then
+    started with the specified configurations using the `qemu-system-x86_64` command.
+
+    Args:
+        name (str): The name of the VM. Used as the identifier and part of the disk image filename.
+        cores (int): The number of CPU cores assigned to the VM. Must be at least 1.
+        memory (int): The amount of RAM (in GB) assigned to the VM. Must be at least 512 MB.
+        disk_size (int): The size of the disk (in GB) for the VM. Must be at least 1 GB.
+        storage (str, optional): The path to the storage disk image. If not provided, a new disk will be created.
+        node_name (str, optional): The name of the node on which to create the VM. Currently not used.
+
+    Returns:
+        str: The path to the disk image used by the VM.
+
+    Note:
+        - The VM is configured to boot from the Debian ISO image specified in the command.
+        - Network configuration is set to a user-mode network with a predefined subnet.
+        - The VM is added to the Django database with a status of 'stopped' after creation.
+        - Error handling for the input parameters is included to ensure valid configurations.
+    """
     if cores < 1:
         return "Error: cores must be at least 1"
     if memory < 1:
@@ -38,10 +62,4 @@ def create_vm(self, name, cores, memory, disk_size, storage=None, node_name=None
     runstatus = subprocess.run(cmd)
     print(runstatus.returncode)
     Vm(name=name, cores=cores, memory=memory, disk_size=disk_size, storage=storage, status='stopped', last_update=datetime.now(), connection_id=3).save()
-    # sql = (f"INSERT INTO web_vm (name, cores, memory, vmid, disk_size, storage, status, last_update, connection_id) "
-    #        f"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
-    # data = (name, cores, memory, name, disk_size, storage, 'stopped', datetime.now(), 3)
-    # self.cursor.execute(sql, data)
-    # self.conn.commit()
-
     return qcow2

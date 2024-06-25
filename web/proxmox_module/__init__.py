@@ -27,12 +27,40 @@ import my_secrets
 
 
 class Proxmox(object):
+    """
+    A class to interact with Proxmox virtual environment through its API.
+
+    This class provides methods to authenticate and perform various operations
+    in a Proxmox VE cluster, such as managing nodes, virtual machines, and storages.
+
+    Attributes:
+        session (requests.Session): A session object for making API requests.
+        nodes_response (str): Raw response from the nodes API endpoint.
+        nodes (list): A list of nodes in the Proxmox cluster.
+        ticket (str): Authentication ticket for the session.
+        csrf_token (str): CSRF prevention token for making POST requests.
+        vms (str): Placeholder for VMs, not used.
+        spice_config (str): Placeholder for SPICE configuration, not used.
+        PROXMOX_HTTP_HOST (str): The HTTP host URL of the Proxmox server.
+        PROXMOX_USERNAME_AT (str): The username with realm for authentication.
+        PROXMOX_PASSWORD (str): The password for authentication.
+        PROXMOX_USERNAME (str): The username for authentication.
+        PROXMOX_IP_HOST (str): The IP host of the Proxmox server.
+    """
     def __init__(self,
                  http_host=my_secrets.PROXMOX_HTTP_HOST,
                  password=my_secrets.PROXMOX_PASSWORD,
                  username=my_secrets.PROXMOX_USERNAME,
                  ip_host=my_secrets.PROXMOX_IP_HOST):
+        """
+        Initializes the Proxmox object with credentials and sets up the session.
 
+        Args:
+            http_host (str): The HTTP host URL of the Proxmox server.
+            password (str): The password for authentication.
+            username (str): The username for authentication.
+            ip_host (str): The IP host of the Proxmox server.
+        """
         self.session = ""
         self.nodes_response = ""
         self.nodes = []
@@ -50,6 +78,7 @@ class Proxmox(object):
         self.PROXMOX_USERNAME = username
         self.PROXMOX_IP_HOST = ip_host
 
+        # Assigning module functions directly to the class
         Proxmox.get_nodes = get_nodes
         Proxmox.list_vms = list_vms
         Proxmox.get_virt_storage = get_virt_storage
@@ -67,6 +96,7 @@ class Proxmox(object):
         Proxmox.create_snapshot = create_snapshot
         Proxmox.edit_vm = edit_vm
 
+        # Authentication and session setup
         auth_url = f'{self.PROXMOX_HTTP_HOST}/access/ticket'
         auth_data = {'username': self.PROXMOX_USERNAME_AT, 'password': self.PROXMOX_PASSWORD}
         response = requests.post(auth_url, data=auth_data, verify=False)
@@ -84,6 +114,7 @@ class Proxmox(object):
         self.session.mount('https://', retries)
         self.session.verify = False
 
+        # Fetching nodes to initialize the nodes attribute
         nodes_url = f'{self.PROXMOX_HTTP_HOST}/nodes'
         self.nodes_response = self.session.get(nodes_url, verify=False)
         self.nodes = self.get_nodes()

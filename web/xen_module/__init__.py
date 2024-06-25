@@ -4,7 +4,6 @@ import ssl
 from ._delete_vm import delete_vm
 from ._get_template import get_templates
 from ._get_nodes import get_nodes
-# from ._smazat import get_vm_ref, get_vms
 from ._get_vms import get_vms
 from ._create_vm import create_vm
 from ._start_vm import start_vm
@@ -20,11 +19,40 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import my_secrets
 
+
 class Xen(object):
+    """
+    Represents a connection and interaction with a Xen hypervisor.
+
+    This class encapsulates methods for managing virtual machines (VMs) on a Xen hypervisor, including creating, starting,
+    stopping, and suspending VMs, as well as managing virtual storage and snapshots.
+
+    Attributes:
+        session_id (str): The session ID for the current Xen server session.
+        server (str): The XML-RPC server proxy for interacting with the Xen API.
+        session (str): Deprecated attribute, not used.
+        nodes_response (str): Deprecated attribute, not used.
+        nodes (list): Deprecated attribute, not used.
+        ticket (str): Deprecated attribute, not used.
+        csrf_token (str): Deprecated attribute, not used.
+        vms (str): Deprecated attribute, not used.
+        spice_config (str): Deprecated attribute, not used.
+        XEN_HOST (str): The URL of the Xen server.
+        XEN_USERNAME (str): The username for authentication with the Xen server.
+        XEN_PASSWORD (str): The password for authentication with the Xen server.
+    """
     def __init__(self,
                  xen_host=my_secrets.XEN_HOST,
                  xen_username=my_secrets.XEN_USERNAME,
                  xen_password=my_secrets.XEN_PASSWORD):
+        """
+        Initializes a new Xen object with the specified host, username, and password.
+
+        Args:
+            xen_host (str): The URL of the Xen server.
+            xen_username (str): The username for authentication with the Xen server.
+            xen_password (str): The password for authentication with the Xen server.
+        """
         self.session_id = ""
         self.server = ""
         self.session = ""
@@ -43,8 +71,7 @@ class Xen(object):
         Xen.delete_vm = delete_vm
         Xen.get_templates = get_templates
         Xen.get_nodes = get_nodes               #DONE
-        # Xen.get_vm_info = get_vm_info
-        # Xen.get_vm_ref = get_vm_ref
+
         Xen.get_vms = get_vms
         Xen.create_vm = create_vm
         Xen.start_vm = start_vm
@@ -56,17 +83,18 @@ class Xen(object):
         Xen.create_snapshot = create_snapshot
         Xen.edit_vm = edit_vm
 
-        print("vytvarim xen")
         self.server = xmlrpc.client.ServerProxy(self.XEN_HOST, context=ssl._create_unverified_context())
-        print("vytvarim xen")
-        print(self.server)
         self.session_id = self.login()
-        print("jedu")
 
 
 
     def login(self):
+        """
+        Logs in to the Xen server with the provided credentials.
 
+        Returns:
+            str: The session ID if login is successful, None otherwise.
+        """
         result = self.server.session.login_with_password(self.XEN_USERNAME, self.XEN_PASSWORD, "2.0", "python-script")
         session_id = result['Value']
         if session_id:
@@ -77,6 +105,9 @@ class Xen(object):
             return None
 
     def logout(self):
+        """
+        Logs out from the Xen server, invalidating the current session ID.
+        """
         if self.session_id:
             self.server.session.logout(self.session_id)
             print("Odhlášení úspěšné")

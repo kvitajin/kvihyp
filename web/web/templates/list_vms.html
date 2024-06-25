@@ -11,6 +11,9 @@
     <button type="button" onclick="window.location.href='{% url 'create_vm' db_connection_id=db_connection_id node_name=node %}'">
         Create VM
     </button>
+    <button type="button" onclick="window.location.href='{% url 'list_storages' db_connection_id=db_connection_id node_name=node %}'">
+        List storages
+    </button>
     <ul>
         {% for item in vms %}
         <li>

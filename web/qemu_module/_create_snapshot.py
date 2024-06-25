@@ -8,6 +8,29 @@ from datetime import datetime
 
 
 def create_snapshot(self, vmid, node_name=None):
+    """
+    Creates a snapshot of a specified virtual machine (VM).
+
+    This function stops the VM if it is running, creates a snapshot of its disk image, and then restarts the VM if it was
+    running before the snapshot process. The snapshot is saved with a timestamp in its name to ensure uniqueness.
+
+    Args:
+        vmid (int): The ID of the VM for which to create a snapshot.
+        node_name (str, optional): The name of the node where the VM is located. This parameter is currently not used
+                                   in the function but can be implemented for future use where node-specific actions
+                                   might be required.
+
+    Note:
+        - The VM is identified using its ID and the snapshot is named using the VM's name and the current timestamp.
+        - If the VM is running, it is stopped before taking the snapshot and restarted afterwards.
+        - The snapshot is saved in the 'qemu_module/snapshots/' directory.
+        - This function uses the 'qemu-img' command to create the snapshot.
+        - In case of an error during the snapshot creation, an error message is printed.
+        - A workaround for bug 1569835 is implemented by moving the snapshot file after creation.
+
+    Returns:
+        None
+    """
     vm = Vm.objects.get(id=vmid)
     flag = False
     if vm is None:

@@ -4,6 +4,27 @@ from humanfriendly import format_timespan
 
 
 def get_vms(self, print_vms=False, node_name=None):
+    """
+    Retrieves and optionally prints information about all virtual machines (VMs) from the Xen server.
+
+    This method fetches records for all VMs and their metrics, including memory usage and uptime, from the Xen server.
+    It can filter VMs based on a specified node name (though this functionality is currently not implemented) and
+    either print the VM information to the console or return it as a list of dictionaries.
+
+    Args:
+        print_vms (bool, optional): If True, prints the VM information to the console. Otherwise, returns the information
+                                    as a list of dictionaries. Defaults to False.
+        node_name (str, optional): The name of the node to filter VMs by. Currently not used in the method.
+
+    Returns:
+        list: A list of dictionaries containing VM information, including name, VM ID, metrics reference, power state,
+              CPU count, memory usage, and uptime. This is returned only if `print_vms` is False.
+
+    Note:
+        - The method currently does not use the `node_name` parameter, but it is included for future expansion.
+        - The memory usage is reported in GiB, and uptime is formatted in a human-friendly format.
+        - VM templates are excluded from the results.
+    """
     data = []
     all_vm_refs = self.server.VM.get_all(self.session_id)['Value']
     for i in all_vm_refs:
@@ -23,7 +44,6 @@ def get_vms(self, print_vms=False, node_name=None):
 
     guest_metrics = []
     for i in self.server.VM_guest_metrics.get_all(self.session_id)['Value']:
-        # print(i)
         for j in data:
             if i in j['Value']['guest_metrics']:
                 j['Value']['guest_metrics'] = self.server.VM_guest_metrics.get_all_records(self.session_id)['Value'][i]
@@ -66,7 +86,6 @@ def get_vms(self, print_vms=False, node_name=None):
             data_metrics = [met for met in metrics if met["ref"] == row["metrics"]]
             if not data_metrics:
                 data_metrics = [{'ref': '', 'mem': '0', 'uptime': '0', 'guest': ''}]
-
 
             formdata.append({'name': row["name_label"],
                              'vmid': row['uuid'],

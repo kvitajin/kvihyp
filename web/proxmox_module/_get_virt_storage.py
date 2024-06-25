@@ -1,6 +1,25 @@
 def get_virt_storage(self, print_storage=False, node_names=None):
-    # function which create new virtual machine
-    # arguments: vm_name, max memory, cpus
+    """
+    Retrieves virtual storage information from specified Proxmox nodes.
+
+    This method fetches the virtual storage details from the Proxmox cluster for the given nodes. If no node names are
+    provided, it defaults to the first node returned by `get_nodes()`. The method can either print the storage details
+    directly or return them as a list of dictionaries, based on the `print_storage` flag.
+
+    Args:
+        print_storage (bool, optional): If True, prints the storage details directly. If False, returns the storage
+                                        details as a list of dictionaries. Defaults to False.
+        node_names (list, optional): A list of node names from which to retrieve storage information. If not provided,
+                                     defaults to the first node returned by `get_nodes()`.
+
+    Returns:
+        list: A list of dictionaries containing storage details for each storage on the specified nodes. Each dictionary
+              includes storage name, used fraction, whether it's shared, active, type, content, total size, used size,
+              available size, and whether it's enabled. This return value is provided only if `print_storage` is False.
+
+    Note:
+        If `print_storage` is True, the method does not return any value but prints the storage details directly.
+    """
     if not node_names:
         node_names = self.get_nodes()[0]
     data = []
